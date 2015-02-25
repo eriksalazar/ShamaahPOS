@@ -1,0 +1,814 @@
+﻿@model ShamaahPOS.Models.DailyCorporationIncome
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @*@Html.AntiForgeryToken()*@
+
+    <div class="form-horizontal">
+        <h2>Daily Income Report for 3/4/2014</h2>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="list-group">
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-3 pull-right">
+
+                        <input />
+
+                    </div>
+                    <div class="col-md-2 pull-right">
+                        <h4 class="list-group-item-heading">
+                            <span>Initial Cash</span>
+                        </h4>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="list-group well">
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Company</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Transfers/Income Amount</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Commission Company Amount</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-1">
+                        <h4 class="list-group-item-heading">
+                            <span>Total Company Amount</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Commission Corp Amount</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-1">
+                        <h4 class="list-group-item-heading">
+                            <span>Total</span>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="list-group-item" data-bind="foreach:dailyIncomes">
+                <div class="row">
+                    <div class="hidden">
+                        <span data-bind="value: DailyCorporationIncomeId" />
+                    </div>
+                    <div class="col-md-2" data-bind="visible: CompanyServiceProvidedId() !=null">
+                        <span data-bind="text: CompanyServiceProvidedId" />
+
+                        @*<select data-bind="options: $root.availableMeals, value: meal, optionsText: 'mealName'"></select>*@
+
+                    </div>
+                    <div class="col-md-2" data-bind="visible: CompanyServiceProvidedId() ==null">
+
+                        <input data-bind="value: ManualCompanyServiceName" />
+
+                    </div>
+                    <div class="col-md-2">
+
+                        <input data-bind="numeric: DailyCorporationIncomeAmount, value:DailyCorporationIncomeAmount, valueUpdate: 'afterkeydown'" class="text-right" />
+
+                    </div>
+                    <div class="col-md-2">
+                        <input data-bind="numeric: DailyCorporationIncomeCompanyCommission, value: DailyCorporationIncomeCompanyCommission, valueUpdate: 'afterkeydown'" class="text-right" />
+
+
+                    </div>
+                    <div class="col-md-1 text-right">
+                        <span data-bind="text: formatCurrency(DailyCompanyIncomeTotal())" />
+
+
+                    </div>
+                    <div class="col-md-2">
+
+                        <input data-bind="numeric:DailyCorporationIncomeCommission, value: DailyCorporationIncomeCommission, valueUpdate: 'afterkeydown'" class="text-right" />
+
+                    </div>
+                    <div class="col-md-1 text-right">
+
+                        <span data-bind="text: formatCurrency(DailyCorporationIncomeTotal())" />
+
+                    </div>
+                    <div class="col-md-1" data-bind="visible: CompanyServiceProvidedId() ==null">
+
+                        <a href="#" data-bind="click: $parent.removeDailyIncome">Remove</a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Total</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <h5 class="list-group-item-heading">
+                            <span data-bind="text: formatCurrency(IncomeAmountGrandTotal())" />
+                        </h5>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <h5 class="list-group-item-heading">
+                            <span data-bind="text: formatCurrency(CommissionCompanyAmountGrandTotal())" />
+                        </h5>
+                    </div>
+                    <div class="col-md-1 text-right">
+                        <h5 class="list-group-item-heading">
+                            <span data-bind="text: formatCurrency(CompanyAmountGrandTotal())" />
+                        </h5>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <h5 class="list-group-item-heading">
+                            <span data-bind="text: formatCurrency(CommissionCorporationAmountGrandTotal())" />
+                        </h5>
+                    </div>
+                    <div class="col-md-1 text-right">
+                        <h5 class=" list-group-item-heading">
+                            <span data-bind="text: formatCurrency(GrandTotal())" />
+                        </h5>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-5 col-md-10">
+                <button data-bind="click: save" class="btn btn-default">Save</button>
+                <button data-bind="click: addDailyIncome" class="btn btn-default">Add New</button>
+                <button data-bind="click: reset" class="btn btn-default">Reset</button>
+            </div>
+        </div>
+        <div class="list-group well">
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-5 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Service</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Check Cash Amount</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Commission Amount</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Total</span>
+                        </h4>
+                    </div>
+
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-5 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Check Cashing</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="list-group well">
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Other Services</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Commission Amount</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Total</span>
+                        </h4>
+                    </div>
+
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Power of Attorney</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-3">
+
+                        <input />
+
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Tax Preparation & ITIN</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="list-group-item-heading">
+                            <span>Copies, Letters, Translations, Fax</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="list-group-item-heading">
+                            <span>Other</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Total</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="list-group well" id="divWithdrawals">
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Withdrawals</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Amount</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Total</span>
+                        </h4>
+                    </div>
+
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <a href="#myPayoutModal" data-toggle="modal">Payouts</a>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-3">
+
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Bank Deposits</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <a href="#myMoneyTransferModal" data-toggle="modal">Money Transfer Cancelled</a>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+
+                </div>
+
+               
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Total</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="list-group well" id="divExpenses">
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Expenses</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Amount</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Total</span>
+                        </h4>
+                    </div>
+
+                </div>
+            </div>
+            <div class="list-group-item">
+                
+
+
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Free Commissions</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="list-group-item-heading">
+                            <a href="#myMoneyOtherExpenes" data-toggle="modal">Other Expenses</a>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Total</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="list-group well" id="divReconciliation">
+            <div class="list-group-item">
+                <div class="row bg-danger">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span class="alert-warning">Reconciliation per Denomination</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span class="alert-warning">Total</span>
+                        </h4>
+                    </div>
+                 
+
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>$100</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-3">
+
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>$50</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="list-group-item-heading">
+                            <span>$20</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="list-group-item-heading">
+                            <span>$10</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="list-group-item-heading">
+                            <span>$10</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="list-group-item-heading">
+                            <span>$5</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="list-group-item-heading">
+                            <span>$1</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="list-group-item-heading">
+                            <span>$0.25</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="list-group-item-heading">
+                            <span>$0.10</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="list-group-item-heading">
+                            <span>$0.05</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-7">
+                        <h4 class="list-group-item-heading">
+                            <span>$0.01</span>
+                        </h4>
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <input />
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-7 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Total</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myPayoutModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">Payouts</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-4 ">
+                                    <h4 class="list-group-item-heading">
+                                        <span>Payout Company</span>
+                                    </h4>
+                                </div>
+                                <div class="col-md-2">
+                                    <h4 class="list-group-item-heading">
+                                        <span>Amount</span>
+                                    </h4>
+                                </div>
+                                <div class="col-md-2">
+                                    <h4 class="list-group-item-heading">
+                                        <span>Commission</span>
+                                    </h4>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-4 ">
+                                    <h4 class="list-group-item-heading">
+                                        <span>Money Gram</span>
+                                    </h4>
+                                </div>
+                                <div class="col-md-2">
+                                  
+                                       <input />
+                                  
+                                </div>
+                                <div class="col-md-2">
+                                   
+                                       <input />
+                                  
+                                </div>
+
+                            </div>
+                     
+                     
+                            <div class="row">
+                                <div class="col-md-4 ">
+                                    <h4 class="list-group-item-heading">
+                                        <span>Vigo</span>
+                                    </h4>
+                                </div>
+                                <div class="col-md-2">
+
+                                    <input />
+
+                                </div>
+                                <div class="col-md-2">
+
+                                    <input />
+
+                                </div>
+
+                            </div>
+                    
+                    
+                            <div class="row">
+                                <div class="col-md-4 ">
+                                    <h4 class="list-group-item-heading">
+                                        <span>Ria Envios</span>
+                                    </h4>
+                                </div>
+                                <div class="col-md-2">
+
+                                    <input />
+
+                                </div>
+                                <div class="col-md-2">
+
+                                    <input />
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+      
+    </div>
+   
+
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section scripts
+{
+    <script>
+        require(['dailyIncome', 'jquery'], function (DailyIncome, $) {
+            var vm = new DailyIncome();
+            vm.loadData();
+
+            $(function () {
+                vm.applyBindings();
+            });
+
+            //var connection = $.hubConnection();
+            //var hub = connection.createHubProxy('dailyIncomes');
+            //hub.on('updated', function (dailyIncomes) {
+            //    vm.updateTicket(dailyIncome);
+            //});
+            //connection.start();
+        });
+    </script>
+}

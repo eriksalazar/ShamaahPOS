@@ -44,13 +44,13 @@ namespace ShamaahPOS.Controllers
         [HttpPost]
         public ActionResult GetAll()
         {
-            return  Json(_db.Fetch<DailyCorporationIncome>("select * from DailyCorporationServiceIncome"));
+            return  Json(_db.Fetch<DailyCompanyServiceIncome>("select * from DailyCorporationServiceIncome"));
         }
 
         [HttpPost]
-        public void Save(IList<DailyCorporationIncome> DailyCorporationIncomes)
+        public void Save(IList<DailyCompanyServiceIncome> DailyCorporationIncomes)
         {
-            foreach(DailyCorporationIncome oDailyCorporationIncome in DailyCorporationIncomes)
+            foreach(DailyCompanyServiceIncome oDailyCorporationIncome in DailyCorporationIncomes)
             {
                 oDailyCorporationIncome.DailyCorporationIncomeDate = Convert.ToDateTime("3/4/2014");
                 if (oDailyCorporationIncome.DailyCorporationIncomeId >0)
@@ -72,7 +72,7 @@ namespace ShamaahPOS.Controllers
             //_hub.Clients.All.updated(ticket);
         }
         [HttpPost]
-        public void Remove(DailyCorporationIncome oDailyCorporationIncome)
+        public void Remove(DailyCompanyServiceIncome oDailyCorporationIncome)
         {
             _db.Delete("DailyCorporationServiceIncome", "DailyCorporationServiceIncomeId", oDailyCorporationIncome);
         }

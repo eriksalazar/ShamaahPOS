@@ -197,8 +197,18 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\DailyCorporationService.cs" />
-    <Compile Include="Models\DailyCorporationIncome.cs" />
+    <Compile Include="Models\CompanyServiceProvided.cs" />
+    <Compile Include="Models\CorporationServiceProvided.cs" />
+    <Compile Include="Models\DailyCompanyPayout.cs" />
+    <Compile Include="Models\DailyCorporationExpense.cs" />
+    <Compile Include="Models\DailyCorporationReconciliation.cs" />
+    <Compile Include="Models\DailyCorporationServiceIncome.cs" />
+    <Compile Include="Models\DailyCompanyServiceIncome.cs" />
+    <Compile Include="Models\DailyCorporationWithdrawal.cs" />
+    <Compile Include="Models\ServiceProvided.cs" />
+    <Compile Include="Models\WithdrawalType.cs" />
+    <Compile Include="Models\DenominationType.cs" />
+    <Compile Include="Models\ExpenseType.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

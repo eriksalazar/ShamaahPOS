@@ -16,7 +16,7 @@
     @Html.ActionLink("Create New", "Create")
     @*<button id="btnCreateDailyRpt" class="btn btn-primary btn-large" type="submit">Create</button>*@
     <div>
-        <table id="table-style" class="table-hover table-striped table-condensed" data-height="400" data-row-style="rowStyle">
+        <table id="table-style" class="table table-hover table-striped table-condensed table-bordered" data-height="400" data-row-style="rowStyle">
             <thead>
                 <tr>
                     <th class="col-md-2">
@@ -62,34 +62,34 @@
                 {
                     <tr>
                         <td>
-                            @item.DailyServiceDate
+                            <a href="/DailyIncome/Create/@item.DailyServiceDate.ToString("yyyy-MM-dd")"> @item.DailyServiceDate.ToShortDateString()</a>
                         </td>
                         <td >
-                            @item.DailyIncomeAmountTotal
+                           @string.Format("{0:C}",  @item.DailyIncomeAmountTotal)
                         </td>
                         <td>
-                            @item.DailyCompanyCommissionTotal
+                            @string.Format("{0:C}", @item.DailyCompanyCommissionTotal)
                         </td>
                         <td>
-                            @item.DailyCorporationCommissionTotal
+                            @string.Format("{0:C}",@item.DailyCorporationCommissionTotal)
                         </td>
                         <td>
-                            @item.DailyCorporationServiceAmountTotal
+                            @string.Format("{0:C}",@item.DailyCorporationServiceAmountTotal)
                         </td>
                         <td>
-                            @item.DailyCorporationWithdrawalsTotal
+                            @string.Format("{0:C}",@item.DailyCorporationWithdrawalsTotal)
                         </td>
                         <td>
-                            @item.DailyCorporationExpensesTotal
+                            @string.Format("{0:C}",@item.DailyCorporationExpensesTotal)
                         </td>
                         <td>
-                            @item.DailyCashTotal
+                            @string.Format("{0:C}",@item.DailyCashTotal)
                         </td>
                         <td>
-                            @item.DailyExistingCashTotal
+                            @string.Format("{0:C}",@item.DailyExistingCashTotal)
                         </td>
                         <td>
-                            @item.CashDifference
+                            @string.Format("{0:C}",@item.CashDifference)
                         </td>
                     </tr>
                 }

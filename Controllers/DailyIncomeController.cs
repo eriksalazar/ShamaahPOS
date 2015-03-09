@@ -12,13 +12,15 @@ namespace ShamaahPOS.Controllers
     public class DailyIncomeController : Controller
     {
         private readonly IDatabase _db;
-        readonly Microsoft.AspNet.SignalR.IHubContext _hub;
+       // readonly Microsoft.AspNet.SignalR.IHubContext _hub;
       
         //
         // GET: /DailyIncome/
         public ActionResult Index()
         {
-            return View();
+            var vm = new DailyIncomeListProvider();
+
+            return View(vm.LoadList(System.DateTime.Now.Month, DateTime.Now.Year));
         }
 
         //
@@ -52,8 +54,8 @@ namespace ShamaahPOS.Controllers
         {
             foreach(DailyCompanyServiceIncome oDailyCorporationIncome in DailyCorporationIncomes)
             {
-                oDailyCorporationIncome.DailyCorporationIncomeDate = Convert.ToDateTime("3/4/2014");
-                if (oDailyCorporationIncome.DailyCorporationIncomeId >0)
+                oDailyCorporationIncome.DailyServiceDate = Convert.ToDateTime("3/4/2014");
+                if (oDailyCorporationIncome.DailyCompanyServiceIncomeId >0)
                 {
                     _db.Update("DailyCorporationIncome", "DailyCorporationServiceIncomeId", oDailyCorporationIncome);
                 }

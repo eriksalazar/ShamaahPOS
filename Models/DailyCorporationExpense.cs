@@ -15,6 +15,8 @@ namespace ShamaahPOS.Models
         public int DailyCorporationExpenseId { get; set; }
         [Column("ExpenseTypeId")]
         public int ExpenseTypeId { get; set; }
+        [Column("CorporationId")]
+        public int CorporationId { get; set; }
         [Column("DailyCorporationDate")]
         public DateTime DailyCorporationDate { get; set; }
         [Column("DailyCorporationExenseAmount")]

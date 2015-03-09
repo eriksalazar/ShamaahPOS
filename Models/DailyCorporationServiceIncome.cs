@@ -20,6 +20,8 @@ namespace ShamaahPOS.Models
         public DateTime DailyCorporationServiceIncomeDate { get; set; }
         [Column("DailyCorporationServiceIncomeNote")]
         public string DailyCorporationServiceIncomeNote { get; set; }
+        [Column("DailyCorporationServiceCommission")]
+        public decimal DailyCorporationServiceCommission { get; set; }
 
     }
 }

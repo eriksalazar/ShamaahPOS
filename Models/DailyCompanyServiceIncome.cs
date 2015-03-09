@@ -18,13 +18,13 @@ namespace ShamaahPOS.Models
         [Column("CompanyServiceProvidedId")]
         public int? CompanyServiceProvidedId  { get; set; }
         [Column("IncomeAmount")]
-        public decimal? DailyCompanyServiceIncomeAmount { get; set; }
+        public decimal? IncomeAmount { get; set; }
         [Column("DailyCompanyCommission")]
-        public decimal? DailyCompanyServiceIncomeCompanyCommission { get; set; }
+        public decimal? DailyCompanyCommission { get; set; }
           [Column("DailyCorporationCommission")]
-        public decimal? DailyCompanyServiceIncomeCommission  { get; set; }
+        public decimal? DailyCorporationCommission { get; set; }
          [Column("DailyServiceDate")]
-        public DateTime DailyCompanyServiceIncomeDate  { get; set; }
+          public DateTime DailyServiceDate { get; set; }
          [Column("ManualCompanyServiceName")]
          public string ManualCompanyServiceName { get; set; }
          [Column("IsPayout")]

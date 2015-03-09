@@ -1,18 +1,22 @@
-﻿<div class="container">
+﻿@using Newtonsoft.Json
+@using ShamaahPOS.Models
+@model ShamaahPOS.Models.DailyIncomeViewModel
+
+<div class="container">
     <div class="page-header">
         <h1>@ViewBag.title</h1>
     </div>
 
-    
+
     <div>
         <h2>Create New Daily Report</h2>
         <input type="text" id="txtDate" class="dateInput" />
     </div>
 
-    @Html.ActionLink("Create New","Create")
-        @*<button id="btnCreateDailyRpt" class="btn btn-primary btn-large" type="submit">Create</button>*@
+    @Html.ActionLink("Create New", "Create")
+    @*<button id="btnCreateDailyRpt" class="btn btn-primary btn-large" type="submit">Create</button>*@
     <div>
-        <table id="table-style" class="table table-hover table-condensed" data-height="400" data-row-style="rowStyle">
+        <table id="table-style" class="table-hover table-striped table-condensed" data-height="400" data-row-style="rowStyle">
             <thead>
                 <tr>
                     <th class="col-md-2">
@@ -20,304 +24,100 @@
                         Date
                     </th>
                     <th class="col-md-2">
-                       Income Amout
+                        Income Amout Total
                     </th>
                     <th class="col-md-2">
-                       Commission Company Amt
+                        Company Commission Amtount
+                    </th>
+                    @*<th class="col-md-2">
+                        Company Total
+                    </th>*@
+                    <th class="col-md-2">
+                        Shamaah Commission
                     </th>
                     <th class="col-md-2">
-                       Company Total
+                        Shamaah Service Amount
                     </th>
                     <th class="col-md-2">
-                      Shamaah Comm Amt
+                        Withdrawal Amount
                     </th>
-                    <th class="col-md-2">
-                       Check Cashing Comm
-                    </th>
-                    <th class="col-md-2">
-                       Services Comm
-                    </th>
-                    <th class="col-md-2">
-                      Payouts
-                    </th>
+
                     <th class="col-md-2">
                         Expenes
                     </th>
                     <th class="col-md-2">
-                        Grand Total
+                        Total Due Cash
+                    </th>
+                    <th class="col-md-2">
+                        Total Existing Cash
+                    </th>
+                    <th class="col-md-2" >
+                        Cash Difference
                     </th>
                 </tr>
             </thead>
+
             <tbody>
-                <tr>
-                    <th class="col-md-2">
-                        <a>12/01/2014</a>
-                    </th>
-                    <th class="col-md-2">
-                        $400000
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $51000
-                    </th>
-                    <th class="col-md-2">
-                        $500
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $300
-                    </th>
-                    <th class="col-md-2">
-                        $5000
-                    </th>
-                    <th class="col-md-2">
-                        $400
-                    </th>
-                    <th class="col-md-2">
-                        $40000
-                    </th>
-                </tr>
-                <tr>
-                    <th class="col-md-2">
-                        <a>12/02/2014</a>
-                    </th>
-                    <th class="col-md-2">
-                        $400000
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $51000
-                    </th>
-                    <th class="col-md-2">
-                        $500
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $300
-                    </th>
-                    <th class="col-md-2">
-                        $5000
-                    </th>
-                    <th class="col-md-2">
-                        $400
-                    </th>
-                    <th class="col-md-2">
-                        $40000
-                    </th>
-                </tr>
-                <tr>
-                    <th class="col-md-2">
-                        <a>12/03/2014</a>
-                    </th>
-                    <th class="col-md-2">
-                        $400000
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $51000
-                    </th>
-                    <th class="col-md-2">
-                        $500
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $300
-                    </th>
-                    <th class="col-md-2">
-                        $5000
-                    </th>
-                    <th class="col-md-2">
-                        $400
-                    </th>
-                    <th class="col-md-2">
-                        $40000
-                    </th>
-                </tr>
-                <tr>
-                    <th class="col-md-2">
-                        <a>12/04/2014</a>
-                    </th>
-                    <th class="col-md-2">
-                        $400000
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $51000
-                    </th>
-                    <th class="col-md-2">
-                        $500
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $300
-                    </th>
-                    <th class="col-md-2">
-                        $5000
-                    </th>
-                    <th class="col-md-2">
-                        $400
-                    </th>
-                    <th class="col-md-2">
-                        $40000
-                    </th>
-                </tr>
-                <tr>
-                    <th class="col-md-2">
-                        <a>12/05/2014</a>
-                    </th>
-                    <th class="col-md-2">
-                        $400000
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $51000
-                    </th>
-                    <th class="col-md-2">
-                        $500
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $300
-                    </th>
-                    <th class="col-md-2">
-                        $5000
-                    </th>
-                    <th class="col-md-2">
-                        $400
-                    </th>
-                    <th class="col-md-2">
-                        $40000
-                    </th>
-                </tr>
-                <tr>
-                    <th class="col-md-2">
-                        <a>12/06/2014</a>
-                    </th>
-                    <th class="col-md-2">
-                        $400000
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $51000
-                    </th>
-                    <th class="col-md-2">
-                        $500
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $300
-                    </th>
-                    <th class="col-md-2">
-                        $5000
-                    </th>
-                    <th class="col-md-2">
-                        $400
-                    </th>
-                    <th class="col-md-2">
-                        $40000
-                    </th>
-                </tr>
-                <tr>
-                    <th class="col-md-2">
-                        <a>12/07/2014</a>
-                    </th>
-                    <th class="col-md-2">
-                        $400000
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $51000
-                    </th>
-                    <th class="col-md-2">
-                        $500
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $300
-                    </th>
-                    <th class="col-md-2">
-                        $5000
-                    </th>
-                    <th class="col-md-2">
-                        $400
-                    </th>
-                    <th class="col-md-2">
-                        $40000
-                    </th>
-                </tr>
-                <tr>
-                    <th class="col-md-2">
-                        <a>12/08/2014</a>
-                    </th>
-                    <th class="col-md-2">
-                        $400000
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $51000
-                    </th>
-                    <th class="col-md-2">
-                        $500
-                    </th>
-                    <th class="col-md-2">
-                        $1000
-                    </th>
-                    <th class="col-md-2">
-                        $300
-                    </th>
-                    <th class="col-md-2">
-                        $5000
-                    </th>
-                    <th class="col-md-2">
-                        $400
-                    </th>
-                    <th class="col-md-2">
-                        $40000
-                    </th>
-                </tr>
+                @foreach (var item in @Model.DailyCorporationIncomeList)
+                {
+                    <tr>
+                        <td>
+                            @item.DailyServiceDate
+                        </td>
+                        <td >
+                            @item.DailyIncomeAmountTotal
+                        </td>
+                        <td>
+                            @item.DailyCompanyCommissionTotal
+                        </td>
+                        <td>
+                            @item.DailyCorporationCommissionTotal
+                        </td>
+                        <td>
+                            @item.DailyCorporationServiceAmountTotal
+                        </td>
+                        <td>
+                            @item.DailyCorporationWithdrawalsTotal
+                        </td>
+                        <td>
+                            @item.DailyCorporationExpensesTotal
+                        </td>
+                        <td>
+                            @item.DailyCashTotal
+                        </td>
+                        <td>
+                            @item.DailyExistingCashTotal
+                        </td>
+                        <td>
+                            @item.CashDifference
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
 </div>
-<script>
-    function rowStyle(row, index) {
-        var classes = ['active', 'success', 'info', 'warning', 'danger'];
+@section scripts {
+    <script>
 
-        if (index % 2 === 0 && index / 2 < classes.length) {
-            return {
-                classes: classes[index / 2]
-            };
-        }
-        return {};
-    }
-</script>
+ 
+            function rowStyle(row, index) {
+                var classes = ['active', 'success', 'info', 'warning', 'danger'];
+
+                if (index % 2 === 0 && index / 2 < classes.length) {
+                    return {
+                        classes: classes[index / 2]
+                    };
+                }
+                return {};
+            }
+            function priceFormatter(value) {
+                // 16777215 == ffffff in decimal
+                var color = '#' + Math.floor(Math.random() * 6777215).toString(16);
+                return '<div  style="color: ' + color + '">' +
+                        '<i class="glyphicon glyphicon-usd"></i>' +
+                        value.substring(1) +
+                        '</div>';
+            }
+    </script>
+}

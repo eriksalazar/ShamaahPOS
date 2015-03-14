@@ -9,97 +9,202 @@
 
 
     <div>
-        <h2>Create New Daily Report</h2>
-        <input type="text" id="txtDate" class="dateInput" />
+        <h2>Monthly Income Report</h2>
+       
     </div>
 
-    @Html.ActionLink("Create New", "Create")
-    @*<button id="btnCreateDailyRpt" class="btn btn-primary btn-large" type="submit">Create</button>*@
+    @*@Html.ActionLink("Create New", "Create")*@
+    <a href="#myNewDailyIncomeModal" data-toggle="modal">Enter New Daily Reconciliation</a>
+
+
+    <nav>
+        <ul class="pager">
+            <li class="previous"><a id="olderButton" href="#" onclick="browseOlder(); return false;"><span aria-hidden="true">&larr;</span> Older</a></li>
+            <li class="next"><a id="newerButton" href="#" onclick="browseNewer(); return false;">Newer <span aria-hidden="true">&rarr;</span></a></li>
+        </ul>
+    </nav>
     <div>
         <table id="table-style" class="table table-hover table-striped table-condensed table-bordered" data-height="400" data-row-style="rowStyle">
             <thead>
-                <tr>
-                    <th class="col-md-2">
-                        <i class="glyphicon glyphicon-star"></i>
-                        Date
-                    </th>
-                    <th class="col-md-2">
-                        Income Amout Total
-                    </th>
-                    <th class="col-md-2">
-                        Company Commission Amtount
-                    </th>
-                    @*<th class="col-md-2">
+            <tr>
+                <th class="col-md-2">
+                    <i class="glyphicon glyphicon-star"></i>
+                    Date
+                </th>
+                <th class="col-md-2">
+                    Income Amout Total
+                </th>
+                <th class="col-md-2">
+                    Company Commission Amtount
+                </th>
+                @*<th class="col-md-2">
                         Company Total
                     </th>*@
-                    <th class="col-md-2">
-                        Shamaah Commission
-                    </th>
-                    <th class="col-md-2">
-                        Shamaah Service Amount
-                    </th>
-                    <th class="col-md-2">
-                        Withdrawal Amount
-                    </th>
+                <th class="col-md-2">
+                    Shamaah Commission
+                </th>
+                <th class="col-md-2">
+                    Shamaah Service Amount
+                </th>
+                <th class="col-md-2">
+                    Withdrawal Amount
+                </th>
 
-                    <th class="col-md-2">
-                        Expenes
-                    </th>
-                    <th class="col-md-2">
-                        Total Due Cash
-                    </th>
-                    <th class="col-md-2">
-                        Total Existing Cash
-                    </th>
-                    <th class="col-md-2" >
-                        Cash Difference
-                    </th>
-                </tr>
+                <th class="col-md-2">
+                    Expenes
+                </th>
+                <th class="col-md-2">
+                    Total Due Cash
+                </th>
+                <th class="col-md-2">
+                    Total Existing Cash
+                </th>
+                <th class="col-md-2">
+                    Cash Difference
+                </th>
+            </tr>
             </thead>
 
             <tbody>
-                @foreach (var item in @Model.DailyCorporationIncomeList)
-                {
-                    <tr>
-                        <td>
-                            <a href="/DailyIncome/Create/@item.DailyServiceDate.ToString("yyyy-MM-dd")"> @item.DailyServiceDate.ToShortDateString()</a>
-                        </td>
-                        <td >
-                           @string.Format("{0:C}",  @item.DailyIncomeAmountTotal)
-                        </td>
-                        <td>
-                            @string.Format("{0:C}", @item.DailyCompanyCommissionTotal)
-                        </td>
-                        <td>
-                            @string.Format("{0:C}",@item.DailyCorporationCommissionTotal)
-                        </td>
-                        <td>
-                            @string.Format("{0:C}",@item.DailyCorporationServiceAmountTotal)
-                        </td>
-                        <td>
-                            @string.Format("{0:C}",@item.DailyCorporationWithdrawalsTotal)
-                        </td>
-                        <td>
-                            @string.Format("{0:C}",@item.DailyCorporationExpensesTotal)
-                        </td>
-                        <td>
-                            @string.Format("{0:C}",@item.DailyCashTotal)
-                        </td>
-                        <td>
-                            @string.Format("{0:C}",@item.DailyExistingCashTotal)
-                        </td>
-                        <td>
-                            @string.Format("{0:C}",@item.CashDifference)
-                        </td>
-                    </tr>
-                }
+            @foreach (var item in @Model.DailyCorporationIncomeList)
+            {
+                <tr >
+                    <td>
+                        @{
+                            if (@item.DailyServiceDate.ToShortDateString() != "1/1/0001")
+                            {
+                                <a href="/DailyIncome/Create/@item.DailyServiceDate.ToString("yyyy-MM-dd")"> @item.DailyServiceDate.ToShortDateString()</a>
+                            }
+                            else
+                            {
+                                <span><b>Totals</b></span>
+                            }
+
+                        }
+
+                    </td>
+                    <td >
+                        @string.Format("{0:C}", @item.DailyIncomeAmountTotal)
+                    </td>
+                    <td>
+                        @string.Format("{0:C}", @item.DailyCompanyCommissionTotal)
+                    </td>
+                    <td>
+                        @string.Format("{0:C}", @item.DailyCorporationCommissionTotal)
+                    </td>
+                    <td>
+                        @string.Format("{0:C}", @item.DailyCorporationServiceAmountTotal)
+                    </td>
+                    <td>
+                        @string.Format("{0:C}", @item.DailyCorporationWithdrawalsTotal)
+                    </td>
+                    <td>
+                        @string.Format("{0:C}", @item.DailyCorporationExpensesTotal)
+                    </td>
+                    <td>
+                        @string.Format("{0:C}", @item.DailyCashTotal)
+                    </td>
+                    <td>
+                        @string.Format("{0:C}", @item.DailyExistingCashTotal)
+                    </td>
+                    <td>
+                        @string.Format("{0:C}", @item.CashDifference)
+                    </td>
+                </tr>
+            }
             </tbody>
         </table>
     </div>
 </div>
+<div class="modal fade" id="myNewDailyIncomeModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Enter a New Date</h4>
+            </div>
+            <div class="modal-body">
+              
+                    <div class="row">
+                        <div class="col-md-1 ">
+                            <h4 class="list-group-item-heading ">
+                                <input id="ServiceDate" type="date" />
+                            </h4>
+                        </div>
+                        
+
+              
+                </div>
+           
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="CreateNewDailyIncome">Create</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @section scripts {
     <script>
+        $(document).ready(function() {
 
+        });
+        $(document).on("click", "#CreateNewDailyIncome", function(event) {
+            var serviceDate = document.getElementById("ServiceDate").value;
+
+            window.location = "/DailyIncome/Create?ServiceDate=" + serviceDate;
+
+        });
+        function browseOlder() {
+            var currMonth = getParameterByName('month');
+            var currYear = getParameterByName('year');
+
+            if (currMonth == null && currYear == null) {
+                var d = new Date();
+                currMonth = d.getMonth() + 1 - 1;
+                if (currMonth === 1) {
+                    currYear = d.getFullYear()-1;
+                }
+                else {
+                    currYear = d.getFullYear();
+                }
+                
+            } else {
+                if (currMonth == 1) {
+                    currYear = currYear - 1;
+                    currMonth = 13;
+                }
+                currMonth = currMonth - 1;
+               
+                
+            }
+            window.location = '/DailyIncome/Index?month=' + currMonth + '&year=' + currYear;
+        };
+        function browseNewer() {
+            var currMonth = getParameterByName('month');
+            var currYear = getParameterByName('year');
+
+            if (currMonth == null && currYear == null) {
+                var d = new Date();
+                currMonth = d.getMonth() + 1 + 1;
+                if (currMonth === 1) {
+                    currYear = d.getFullYear() + 1;
+                }
+                else {
+                    currYear = d.getFullYear();
+                }
+
+            } else {
+                if (currMonth == 1) {
+                    currYear = currYear+ 1;
+                    currMonth = 13;
+                }
+                currMonth = currMonth + 1;
+
+
+            }
+            window.location = '/DailyIncome/Index?month=' + currMonth + '&year=' + currYear;
+        };
  
             function rowStyle(row, index) {
                 var classes = ['active', 'success', 'info', 'warning', 'danger'];
@@ -118,6 +223,12 @@
                         '<i class="glyphicon glyphicon-usd"></i>' +
                         value.substring(1) +
                         '</div>';
+            }
+            function getParameterByName(name) {
+                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                    results = regex.exec(location.search);
+                return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
             }
     </script>
 }

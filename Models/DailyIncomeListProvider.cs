@@ -20,7 +20,7 @@ namespace ShamaahPOS.Models
             _db = db;
         }
 
-        public DailyIncomeViewModel LoadList(int month, int year)
+        public DailyIncomeViewModel LoadList(int? month, int? year)
         {
             var data = _db.Fetch<DailyCorporationIncome>("exec dbo.getDailyCorporationIncomeList @0, @1", month, year);
 

@@ -16,11 +16,16 @@ namespace ShamaahPOS.Controllers
       
         //
         // GET: /DailyIncome/
-        public ActionResult Index()
+        public ActionResult Index(int? month, int? year)
         {
             var vm = new DailyIncomeListProvider();
-
-            return View(vm.LoadList(System.DateTime.Now.Month, DateTime.Now.Year));
+            
+            if (month == null && year ==null)
+            {
+                month = DateTime.Now.Month;
+                year = DateTime.Now.Year;
+            }
+            return View(vm.LoadList(month, year));
         }
 
         //

@@ -296,6 +296,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\DailyIncome\Index.cshtml" />
     <Content Include="Views\DailyIncome\Create.cshtml" />
+    <Content Include="Views\DailyIncome\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

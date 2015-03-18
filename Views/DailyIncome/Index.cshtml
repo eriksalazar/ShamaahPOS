@@ -10,12 +10,15 @@
 
     <div>
         <h2>Monthly Income Report</h2>
-       
+
     </div>
 
     @*@Html.ActionLink("Create New", "Create")*@
     <a href="#myNewDailyIncomeModal" data-toggle="modal">Enter New Daily Reconciliation</a>
-
+    <div class="alert alert-danger" style="display: none">
+        <a class="close" onclick="$('.alert').hide()">×</a>
+        <strong>Warning!</strong> Selected Date already exist. Please choose a diferent one.
+    </div>
 
     <nav>
         <ul class="pager">
@@ -26,92 +29,92 @@
     <div>
         <table id="table-style" class="table table-hover table-striped table-condensed table-bordered" data-height="400" data-row-style="rowStyle">
             <thead>
-            <tr>
-                <th class="col-md-2">
-                    <i class="glyphicon glyphicon-star"></i>
-                    Date
-                </th>
-                <th class="col-md-2">
-                    Income Amout Total
-                </th>
-                <th class="col-md-2">
-                    Company Commission Amtount
-                </th>
-                @*<th class="col-md-2">
-                        Company Total
-                    </th>*@
-                <th class="col-md-2">
-                    Shamaah Commission
-                </th>
-                <th class="col-md-2">
-                    Shamaah Service Amount
-                </th>
-                <th class="col-md-2">
-                    Withdrawal Amount
-                </th>
+                <tr>
+                    <th class="col-md-2">
+                        <i class="glyphicon glyphicon-star"></i>
+                        Date
+                    </th>
+                    <th class="col-md-2">
+                        Income Amout Total
+                    </th>
+                    <th class="col-md-2">
+                        Company Commission Amtount
+                    </th>
+                    @*<th class="col-md-2">
+                            Company Total
+                        </th>*@
+                    <th class="col-md-2">
+                        Shamaah Commission
+                    </th>
+                    <th class="col-md-2">
+                        Shamaah Service Amount
+                    </th>
+                    <th class="col-md-2">
+                        Withdrawal Amount
+                    </th>
 
-                <th class="col-md-2">
-                    Expenes
-                </th>
-                <th class="col-md-2">
-                    Total Due Cash
-                </th>
-                <th class="col-md-2">
-                    Total Existing Cash
-                </th>
-                <th class="col-md-2">
-                    Cash Difference
-                </th>
-            </tr>
+                    <th class="col-md-2">
+                        Expenes
+                    </th>
+                    <th class="col-md-2">
+                        Total Due Cash
+                    </th>
+                    <th class="col-md-2">
+                        Total Existing Cash
+                    </th>
+                    <th class="col-md-2">
+                        Cash Difference
+                    </th>
+                </tr>
             </thead>
 
             <tbody>
-            @foreach (var item in @Model.DailyCorporationIncomeList)
-            {
-                <tr >
-                    <td>
-                        @{
-                            if (@item.DailyServiceDate.ToShortDateString() != "1/1/0001")
-                            {
-                                <a href="/DailyIncome/Create/@item.DailyServiceDate.ToString("yyyy-MM-dd")"> @item.DailyServiceDate.ToShortDateString()</a>
-                            }
-                            else
-                            {
-                                <span><b>Totals</b></span>
+                @foreach (var item in @Model.DailyCorporationIncomeList)
+                {
+                    <tr>
+                        <td>
+                            @{
+                    if (@item.DailyServiceDate.ToShortDateString() != "1/1/0001")
+                    {
+                        <a href="/DailyIncome/Detail?serviceDate=@item.DailyServiceDate.ToString("yyyy-MM-dd")"> @item.DailyServiceDate.ToShortDateString()</a>
+                    }
+                    else
+                    {
+                        <span><b>Totals</b></span>
+                    }
+
                             }
 
-                        }
-
-                    </td>
-                    <td >
-                        @string.Format("{0:C}", @item.DailyIncomeAmountTotal)
-                    </td>
-                    <td>
-                        @string.Format("{0:C}", @item.DailyCompanyCommissionTotal)
-                    </td>
-                    <td>
-                        @string.Format("{0:C}", @item.DailyCorporationCommissionTotal)
-                    </td>
-                    <td>
-                        @string.Format("{0:C}", @item.DailyCorporationServiceAmountTotal)
-                    </td>
-                    <td>
-                        @string.Format("{0:C}", @item.DailyCorporationWithdrawalsTotal)
-                    </td>
-                    <td>
-                        @string.Format("{0:C}", @item.DailyCorporationExpensesTotal)
-                    </td>
-                    <td>
-                        @string.Format("{0:C}", @item.DailyCashTotal)
-                    </td>
-                    <td>
-                        @string.Format("{0:C}", @item.DailyExistingCashTotal)
-                    </td>
-                    <td>
-                        @string.Format("{0:C}", @item.CashDifference)
-                    </td>
-                </tr>
-            }
+                        </td>
+                        <td>
+                            @string.Format("{0:C}", @item.DailyIncomeAmountTotal)
+                        </td>
+                        <td>
+                            @string.Format("{0:C}", @item.DailyCompanyCommissionTotal)
+                        </td>
+                        <td>
+                            @string.Format("{0:C}", @item.DailyCorporationCommissionTotal)
+                        </td>
+                        <td>
+                            @string.Format("{0:C}", @item.DailyCorporationServiceAmountTotal)
+                        </td>
+                        <td>
+                            @string.Format("{0:C}", @item.DailyCorporationWithdrawalsTotal)
+                        </td>
+                        <td>
+                            @string.Format("{0:C}", @item.DailyCorporationExpensesTotal)
+                        </td>
+                        <td>
+                            @string.Format("{0:C}", @item.DailyCashTotal)
+                        </td>
+                        <td>
+                            @string.Format("{0:C}", @item.DailyExistingCashTotal)
+                        </td>
+                        <td>
+                            @string.Format("{0:C}", @item.CashDifference)
+                        </td>
+                    </tr>
+                }
             </tbody>
         </table>
     </div>
@@ -124,18 +127,17 @@
                 <h4 class="modal-title">Enter a New Date</h4>
             </div>
             <div class="modal-body">
-              
-                    <div class="row">
-                        <div class="col-md-1 ">
-                            <h4 class="list-group-item-heading ">
-                                <input id="ServiceDate" type="date" />
-                            </h4>
-                        </div>
-                        
-
-              
+                <div class="row">
+                    <div class="col-md-1 ">
+                        <h4 class="list-group-item-heading ">
+                            <input id="ServiceDate" type="date" />
+                        </h4>
+                    </div>
                 </div>
-           
+            </div>
+            <div class="alert alert-warning" style="display: none">
+                <a class="close" onclick="$('.alert').hide()">×</a>
+                <strong>Warning!</strong> Please enter a date.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -146,13 +148,19 @@
 </div><!-- /.modal -->
 @section scripts {
     <script>
-        $(document).ready(function() {
-
+        $(document).ready(function () {
+            if (getParameterByName("valid") == "0") {
+                $('.alert-danger').show();
+            }
         });
-        $(document).on("click", "#CreateNewDailyIncome", function(event) {
+        $(document).on("click", "#CreateNewDailyIncome", function (event) {
             var serviceDate = document.getElementById("ServiceDate").value;
-
-            window.location = "/DailyIncome/Create?ServiceDate=" + serviceDate;
+            if (serviceDate == null || serviceDate == "") {
+                //alert("Please enter a date");
+                $('.alert-warning').show();
+                return;
+            }
+            window.location = "/DailyIncome/Create?serviceDate=" + serviceDate;
 
         });
         function browseOlder() {
@@ -163,20 +171,20 @@
                 var d = new Date();
                 currMonth = d.getMonth() + 1 - 1;
                 if (currMonth === 1) {
-                    currYear = d.getFullYear()-1;
+                    currYear = d.getFullYear() - 1;
                 }
                 else {
                     currYear = d.getFullYear();
                 }
-                
+
             } else {
                 if (currMonth == 1) {
                     currYear = currYear - 1;
                     currMonth = 13;
                 }
                 currMonth = currMonth - 1;
-               
-                
+
+
             }
             window.location = '/DailyIncome/Index?month=' + currMonth + '&year=' + currYear;
         };
@@ -195,40 +203,40 @@
                 }
 
             } else {
-                if (currMonth == 1) {
-                    currYear = currYear+ 1;
-                    currMonth = 13;
+                if (currMonth == 12) {
+                    currYear = parseInt(currYear) + 1;
+                    currMonth = 0;
                 }
-                currMonth = currMonth + 1;
+                currMonth = parseInt(currMonth) + 1;
 
 
             }
             window.location = '/DailyIncome/Index?month=' + currMonth + '&year=' + currYear;
         };
- 
-            function rowStyle(row, index) {
-                var classes = ['active', 'success', 'info', 'warning', 'danger'];
 
-                if (index % 2 === 0 && index / 2 < classes.length) {
-                    return {
-                        classes: classes[index / 2]
-                    };
-                }
-                return {};
+        function rowStyle(row, index) {
+            var classes = ['active', 'success', 'info', 'warning', 'danger'];
+
+            if (index % 2 === 0 && index / 2 < classes.length) {
+                return {
+                    classes: classes[index / 2]
+                };
             }
-            function priceFormatter(value) {
-                // 16777215 == ffffff in decimal
-                var color = '#' + Math.floor(Math.random() * 6777215).toString(16);
-                return '<div  style="color: ' + color + '">' +
-                        '<i class="glyphicon glyphicon-usd"></i>' +
-                        value.substring(1) +
-                        '</div>';
-            }
-            function getParameterByName(name) {
-                name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-                var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-                    results = regex.exec(location.search);
-                return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
-            }
+            return {};
+        }
+        function priceFormatter(value) {
+            // 16777215 == ffffff in decimal
+            var color = '#' + Math.floor(Math.random() * 6777215).toString(16);
+            return '<div  style="color: ' + color + '">' +
+                    '<i class="glyphicon glyphicon-usd"></i>' +
+                    value.substring(1) +
+                    '</div>';
+        }
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
     </script>
 }

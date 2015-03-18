@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using ShamaahPOS.Models;
 using Microsoft.AspNet.SignalR.Infrastructure;
 using NPoco;
@@ -43,9 +44,22 @@ namespace ShamaahPOS.Controllers
 
         //
         // GET: /DailyIncome/Create
-        public ActionResult Create()
+        public ActionResult Create(string serviceDate)
         {
-            return View();
+            var todayServiceDate = Convert.ToDateTime(serviceDate).ToShortDateString();
+            ViewBag.serviceDate = todayServiceDate;
+            var dailyServiceIncome=    _db.Fetch<DailyCompanyServiceIncome>(
+                    "select * from DailyCompanyServiceIncome where DailyServiceDate = @0", Convert.ToDateTime(todayServiceDate));
+            if (dailyServiceIncome.Count > 0)
+            {
+                var routeValues = new RouteValueDictionary {{"valid", 0}};
+                return RedirectToAction("Index", routeValues);
+            }
+            _db.Execute("dbo.DailyIncomeServiceSetup @0", Convert.ToDateTime(todayServiceDate));
+
+            var detailRouteValues = new RouteValueDictionary { { "serviceDate", serviceDate } };
+
+            return RedirectToAction("Detail", detailRouteValues);
         }
 
         [HttpPost]
@@ -103,8 +117,10 @@ namespace ShamaahPOS.Controllers
 
         //
         // GET: /DailyIncome/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Detail(string serviceDate)
         {
+            serviceDate = Convert.ToDateTime(serviceDate).ToShortDateString();
+            ViewBag.serviceDate = serviceDate;
             return View();
         }
 

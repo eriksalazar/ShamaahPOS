@@ -1,4 +1,4 @@
-﻿define(['jquery', 'ravenjs'], function ($) {
+﻿define(['jquery'], function ($) {
 
     return {
         jsonPost: function (url, data) {

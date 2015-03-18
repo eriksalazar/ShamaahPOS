@@ -8,6 +8,7 @@
            
             'knockout-3.3.0'
         ],
+        lodash: 'lodash.min',
         //'jquery.signalR': 'jquery.signalR-2.1.1.min',
         //'signalR.proxy': '/signalr/hubs?',
         //ravenjs: '//cdn.ravenjs.com/1.1.10/jquery,native/raven.min',
@@ -16,7 +17,7 @@
         'knockout.mapping': 'knockout.mapping-latest'
     },
     shim: {
-            'jquery.signalR': { deps: ['jquery'] },
+            //'jquery.signalR': { deps: ['jquery'] },
             //'signalR.proxy': {
             //    deps: ['jquery.signalR'],
             //    exports: '$.connection'

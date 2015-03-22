@@ -26,11 +26,32 @@ define(['knockout', 'xhr','lodash', 'jquery', 'knockout.mapping', 'utils'], func
             });
             self.ManualCompanyServiceName = ko.observable(data.ManualCompanyServiceName);
             self.IsPayout = ko.observable(data.IsPayout);
+            self.IsSaving = ko.observable(false);
             var save = ko.computed(function () {
                 var incomeAmount = self.IncomeAmount();
+                var dailyCompanyCommission = self.DailyCompanyCommission();
+                var dailyCorporationCommission = self.DailyCorporationCommission();
+                var manualCompanyServiceName = self.ManualCompanyServiceName();
                 if (ko.computedContext.isInitial()) return;
+                self.IsSaving(true);
+                $.ajax({
+                    url: '/DailyIncome/SaveDailyCompanyIncome',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify({
+                        dailyCompanyServiceIncomeId: self.DailyCompanyServiceIncomeId(),
+                        incomeAmount: incomeAmount,
+                        dailyCompanyCommission: dailyCompanyCommission,
+                        dailyCorporationCommission: dailyCorporationCommission,
+                        manualCompanyServiceName: manualCompanyServiceName,
+                        dailyServiceDate: getParameterByName('serviceDate')
+                    })
+                }).done(function (data) {
+                    self.DailyCompanyServiceIncomeId(data);
+                    self.IsSaving(false);
+                });;
 
-                alert('here ' + self.DailyCompanyServiceIncomeId());
             });
             save.extend({ rateLimit: { timeout: 500, method: "notifyWhenChangesStop" } });
         };
@@ -62,16 +83,11 @@ define(['knockout', 'xhr','lodash', 'jquery', 'knockout.mapping', 'utils'], func
             return total;
         });
 
-        self.save = function () {
-            xhr.jsonPost('/dailyIncome/save', mapping.toJS(self.dailyIncomes()));
-           
-
-        };
-
+        
 
         self.addDailyIncome = function () {
             self.dailyIncomes.push(new self.LineVm({
-                DailyCorporationIncomeId: null, CompanyServiceProvidedId: null, IncomeAmount: 0,
+                DailyCompanyServiceIncomeId: null, CompanyServiceProvidedId: null, IncomeAmount: 0,
                 DailyCompanyCommission: 0, DailyCorporationCommission: 0, DailyServiceDate: getParameterByName('serviceDate'),
                 ManualCompanyServiceName: null, IsPayout:0
                 }));
@@ -81,7 +97,15 @@ define(['knockout', 'xhr','lodash', 'jquery', 'knockout.mapping', 'utils'], func
         
         self.removeDailyIncome = function (data) {
             self.dailyIncomes.remove(data);
-            xhr.jsonPost('/dailyIncome/remove', mapping.toJS(data));
+            $.ajax({
+                url: '/DailyIncome/Remove',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ dailyCompanyServiceIncomeId: data.DailyCompanyServiceIncomeId() })
+            });
+
+           // xhr.jsonPost('/dailyIncome/remove', mapping.toJS(data));
         }
         self.reset =function() { return self.loadData() }
 

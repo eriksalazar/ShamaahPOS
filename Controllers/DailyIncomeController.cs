@@ -73,33 +73,40 @@ namespace ShamaahPOS.Controllers
         }
 
         [HttpPost]
-        public void Save(IList<DailyCompanyServiceIncome> DailyCorporationIncomes)
+        public int? SaveDailyCompanyIncome(int? dailyCompanyServiceIncomeId, decimal? incomeAmount,
+            decimal? dailyCompanyCommission, decimal? dailyCorporationCommission, string manualCompanyServiceName, string dailyServiceDate)
         {
-            foreach(DailyCompanyServiceIncome oDailyCorporationIncome in DailyCorporationIncomes)
+            if (dailyCompanyServiceIncomeId > 0)
             {
-                oDailyCorporationIncome.DailyServiceDate = Convert.ToDateTime("3/4/2014");
-                if (oDailyCorporationIncome.DailyCompanyServiceIncomeId >0)
-                {
-                    _db.Update("DailyCorporationIncome", "DailyCorporationServiceIncomeId", oDailyCorporationIncome);
-                }
-                else
-                {
-                    _db.Insert("DailyCorporationIncome", "DailyCorporationServiceIncomeId", true, oDailyCorporationIncome);
-
-                }
-                //_hub.Clients.All.updated(oDailyCorporationIncome);
+                var ds = _db.SingleById<DailyCompanyServiceIncome>(dailyCompanyServiceIncomeId);
+                ds.IncomeAmount = incomeAmount;
+                ds.DailyCompanyCommission = dailyCompanyCommission;
+                ds.DailyCorporationCommission = dailyCorporationCommission;
+                _db.Update(ds);
+                return dailyCompanyServiceIncomeId;
             }
-
-            //var DailyCorporationIncome = _db.Single<DailyCorporationIncome>("select * from tickets where id=@0", t.id);
-
-            //ticket.state = t.state;
-            //_db.Update("tickets", "id", ticket);
-            //_hub.Clients.All.updated(ticket);
+            else
+            {
+                var ds = new DailyCompanyServiceIncome()
+                {
+                    IncomeAmount = incomeAmount,
+                    DailyCompanyCommission = dailyCompanyCommission,
+                    DailyCorporationCommission = dailyCorporationCommission,
+                    ManualCompanyServiceName = manualCompanyServiceName,
+                    DailyServiceDate = Convert.ToDateTime(dailyServiceDate),
+                    IsPayout = false
+                  
+                };
+                _db.Insert(ds);
+                return ds.DailyCompanyServiceIncomeId;
+            }
         }
+     
         [HttpPost]
-        public void Remove(DailyCompanyServiceIncome oDailyCorporationIncome)
+        public void Remove(int? dailyCompanyServiceIncomeId)
         {
-            _db.Delete("DailyCorporationServiceIncome", "DailyCorporationServiceIncomeId", oDailyCorporationIncome);
+            var ds = new DailyCompanyServiceIncome();
+            _db.Delete("DailyCompanyServiceIncome", "DailyCompanyServiceIncomeId", ds, dailyCompanyServiceIncomeId);
         }
 
         //

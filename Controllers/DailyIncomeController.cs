@@ -63,9 +63,13 @@ namespace ShamaahPOS.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetAll()
+        public ActionResult GetAll(string serviceDate)
         {
-            return  Json(_db.Fetch<DailyCompanyServiceIncome>("select * from DailyCorporationServiceIncome"));
+            var todayServiceDate = Convert.ToDateTime(serviceDate).ToShortDateString();
+            ViewBag.serviceDate = todayServiceDate;
+            return Json(_db.Fetch<DailyCompanyServiceIncomeRow>(
+                    "exec dbo.getDailyCompanyIncome @0", Convert.ToDateTime(todayServiceDate)));
+           
         }
 
         [HttpPost]

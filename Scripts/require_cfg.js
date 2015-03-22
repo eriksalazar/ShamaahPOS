@@ -29,7 +29,8 @@
             //        this.Raven.config('').install();
             //    }
             //},
-            'jquery.bootstrap': { deps: ['jquery'] }
+        'jquery.bootstrap': { deps: ['jquery'] },
+        'bootstrap': { deps: ['jquery'] }
     }
     //deps: ['ravenjs' /*, 'jquery.bootstrap'*/] //auto-load on page startup
 };

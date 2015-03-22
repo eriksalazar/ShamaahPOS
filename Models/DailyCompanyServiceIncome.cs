@@ -32,5 +32,17 @@ namespace ShamaahPOS.Models
 
     }
 
-   
+    public class DailyCompanyServiceIncomeRow
+    {
+        public int DailyCompanyServiceIncomeId { get; set; }
+        public int? CompanyServiceProvidedId { get; set; }
+        public string CompanyServiceProvidedName { get; set; }
+        public decimal? IncomeAmount { get; set; }
+        public decimal? DailyCompanyCommission { get; set; }
+        public decimal? DailyCorporationCommission { get; set; }
+        public DateTime DailyServiceDate { get; set; }
+        public string ManualCompanyServiceName { get; set; }
+        public bool? IsPayout { get; set; }
+
+    }
 }

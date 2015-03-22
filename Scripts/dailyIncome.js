@@ -2,50 +2,63 @@
     return "$" + value.toFixed(2);
 }
 
-define(['knockout', 'xhr', 'jquery', 'knockout.mapping'], function (ko, xhr, $, mapping) {
+define(['knockout', 'xhr','lodash', 'jquery', 'knockout.mapping', 'utils'], function (ko, xhr, _, $, mapping) {
     "use strict";
     return function () {
         var self = this;
 
         self.dailyIncomes = ko.observableArray();
        
-        self.lineVM = function (data) {
+        self.LineVm = function (data) {
             var self = this;
-            self.DailyCorporationIncomeId = ko.observable(data.DailyCorporationIncomeId);
-            self.CompanyServiceProvidedId = ko.observable(data.CompanyServiceProvidedId)
-            self.DailyCorporationIncomeAmount = ko.observable(data.DailyCorporationIncomeAmount);
-            self.DailyCorporationIncomeCompanyCommission = ko.observable(data.DailyCorporationIncomeCompanyCommission);
-            self.DailyCorporationIncomeCommission = ko.observable(data.DailyCorporationIncomeCommission);
-            self.DailyCorporationIncomeDate = ko.observable(data.DailyCorporationIncomeDate);
-            self.DailyCorporationIncomeTotal = ko.computed(function () { return self.DailyCorporationIncomeAmount() ? parseFloat(self.DailyCorporationIncomeAmount()) + parseFloat(self.DailyCorporationIncomeCommission()) + parseFloat(self.DailyCorporationIncomeCompanyCommission()) : 0 });
-            self.DailyCompanyIncomeTotal = ko.computed(function () { return self.DailyCorporationIncomeAmount() ? parseFloat(self.DailyCorporationIncomeAmount()) + parseFloat(self.DailyCorporationIncomeCompanyCommission()) : 0 });
+            self.DailyCompanyServiceIncomeId = ko.observable(data.DailyCompanyServiceIncomeId);
+            self.CompanyServiceProvidedId = ko.observable(data.CompanyServiceProvidedId);
+            self.CompanyServiceProvidedName = ko.observable(data.CompanyServiceProvidedName);
+            self.IncomeAmount = ko.observable(data.IncomeAmount);
+            self.DailyCompanyCommission = ko.observable(data.DailyCompanyCommission);
+            self.DailyCorporationCommission = ko.observable(data.DailyCorporationCommission);
+            self.DailyServiceDate = ko.observable(data.DailyServiceDate);
+            self.DailyCorporationIncomeTotal = ko.pureComputed(function () {
+                return parseFloat(self.IncomeAmount() ? self.IncomeAmount() : 0) + parseFloat(self.DailyCompanyCommission() ? self.DailyCompanyCommission() : 0) + parseFloat(self.DailyCorporationCommission() ? self.DailyCorporationCommission() : 0);
+            });
+            self.DailyCompanyIncomeTotal = ko.pureComputed(function () {
+                return parseFloat(self.IncomeAmount() ? self.IncomeAmount() : 0) + parseFloat(self.DailyCompanyCommission() ? self.DailyCompanyCommission() : 0);
+            });
             self.ManualCompanyServiceName = ko.observable(data.ManualCompanyServiceName);
+            self.IsPayout = ko.observable(data.IsPayout);
+            var save = ko.computed(function () {
+                var incomeAmount = self.IncomeAmount();
+                if (ko.computedContext.isInitial()) return;
+
+                alert('here ' + self.DailyCompanyServiceIncomeId());
+            });
+            save.extend({ rateLimit: { timeout: 500, method: "notifyWhenChangesStop" } });
         };
         
        
-        self.IncomeAmountGrandTotal = ko.computed(function () {
+        self.IncomeAmountGrandTotal = ko.pureComputed(function () {
             var total = 0;
-            $.each(self.dailyIncomes(), function () { total += parseFloat(this.DailyCorporationIncomeAmount()) })
+            $.each(self.dailyIncomes(), function () { total += parseFloat(this.IncomeAmount() ? this.IncomeAmount():0) });
             return total;
         });
-        self.CommissionCompanyAmountGrandTotal = ko.computed(function () {
+        self.CommissionCompanyAmountGrandTotal = ko.pureComputed(function () {
             var total = 0;
-            $.each(self.dailyIncomes(), function () { total += parseFloat(this.DailyCorporationIncomeCompanyCommission()) })
+            $.each(self.dailyIncomes(), function () { total += parseFloat(this.DailyCompanyCommission()  ? this.DailyCompanyCommission():0) });
             return total;
         });
-        self.CompanyAmountGrandTotal = ko.computed(function () {
+        self.CompanyAmountGrandTotal = ko.pureComputed(function () {
             var total = 0;
-            $.each(self.dailyIncomes(), function () { total += this.DailyCompanyIncomeTotal() })
+            $.each(self.dailyIncomes(), function () { total += parseFloat(this.DailyCompanyIncomeTotal() ? this.DailyCompanyIncomeTotal():0) });
             return total;
         });
-        self.CommissionCorporationAmountGrandTotal = ko.computed(function () {
+        self.CommissionCorporationAmountGrandTotal = ko.pureComputed(function () {
             var total = 0;
-            $.each(self.dailyIncomes(), function () { total += parseFloat(this.DailyCorporationIncomeCommission()) })
+            $.each(self.dailyIncomes(), function () { total += parseFloat(this.DailyCorporationCommission() ? this.DailyCorporationCommission():0) });
             return total;
         });
-        self.GrandTotal = ko.computed(function () {
+        self.GrandTotal = ko.pureComputed(function () {
             var total = 0;
-            $.each(self.dailyIncomes(), function () { total += this.DailyCorporationIncomeTotal() })
+            $.each(self.dailyIncomes(), function () { total += parseFloat(this.DailyCorporationIncomeTotal() ? this.DailyCorporationIncomeTotal() : 0) });
             return total;
         });
 
@@ -54,11 +67,13 @@ define(['knockout', 'xhr', 'jquery', 'knockout.mapping'], function (ko, xhr, $, 
            
 
         };
+
+
         self.addDailyIncome = function () {
-            self.dailyIncomes.push(new self.lineVM({
-                DailyCorporationIncomeId: null, CompanyServiceProvidedId: null, DailyCorporationIncomeAmount: 0,
-                DailyCorporationIncomeCompanyCommission: 0, DailyCorporationIncomeCommission: 0, DailyCorporationIncomeDate: '3/04/2014',
-                ManualCompanyServiceName: null 
+            self.dailyIncomes.push(new self.LineVm({
+                DailyCorporationIncomeId: null, CompanyServiceProvidedId: null, IncomeAmount: 0,
+                DailyCompanyCommission: 0, DailyCorporationCommission: 0, DailyServiceDate: getParameterByName('serviceDate'),
+                ManualCompanyServiceName: null, IsPayout:0
                 }));
             
             
@@ -71,18 +86,23 @@ define(['knockout', 'xhr', 'jquery', 'knockout.mapping'], function (ko, xhr, $, 
         self.reset =function() { return self.loadData() }
 
         self.loadData = function () {
-            xhr.jsonPost('/dailyIncome/getAll').done(function (data) {
-                //var mappedDailyIncomes = $.map(allData, function (item) { return new DailyIncome(item) });
-                var a = [];
-                for(var i=0; i<data.length; i++){
-                    var line = data[i];
+            $.ajax({
+                url: '/DailyIncome/GetAll',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({
+                    serviceDate: getParameterByName('serviceDate')
+                })
+            }).done(function(data) {
 
-                   var q = new self.lineVM(line);
-                    a.push(q);
-                }
-                self.dailyIncomes(a);
-
+                self.dailyIncomes(_.map(data, function (d) {
+                    return new self.LineVm(d);
+                }));
             });
+
+
+           
         };
 
       
@@ -90,6 +110,7 @@ define(['knockout', 'xhr', 'jquery', 'knockout.mapping'], function (ko, xhr, $, 
         self.applyBindings = function () {
             ko.applyBindings(self);
         };
+
 
         ko.bindingHandlers.numeric = {
             init: function (element, valueAccessor) {

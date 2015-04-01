@@ -29,6 +29,8 @@ namespace ShamaahPOS.Models
          public string ManualCompanyServiceName { get; set; }
          [Column("IsPayout")]
          public bool? IsPayout { get; set; }
+        [Column("ManualCorporationId")]
+         public int? ManualCorporationId { get; set; }
 
     }
 
@@ -43,6 +45,7 @@ namespace ShamaahPOS.Models
         public DateTime DailyServiceDate { get; set; }
         public string ManualCompanyServiceName { get; set; }
         public bool? IsPayout { get; set; }
+        public int? ManualCorporationId { get; set; }
 
     }
 }

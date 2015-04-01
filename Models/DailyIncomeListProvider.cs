@@ -22,7 +22,7 @@ namespace ShamaahPOS.Models
 
         public DailyIncomeViewModel LoadList(int? month, int? year)
         {
-            var data = _db.Fetch<DailyCorporationIncome>("exec dbo.getDailyCorporationIncomeList @0, @1", month, year);
+            var data = _db.Fetch<DailyCorporationIncome>("exec dbo.getDailyCorporationIncomeList @0, @1, @2", month, year, 1);//TODO Change to CorporationId from selected corp on login
 
             var vm = new DailyIncomeViewModel
             {

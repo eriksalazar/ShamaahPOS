@@ -94,7 +94,8 @@ namespace ShamaahPOS.Controllers
                     DailyCorporationCommission = dailyCorporationCommission,
                     ManualCompanyServiceName = manualCompanyServiceName,
                     DailyServiceDate = Convert.ToDateTime(dailyServiceDate),
-                    IsPayout = false
+                    IsPayout = false,
+                    ManualCorporationId = manualCompanyServiceName != null? 1 : new int?() //TODO Change to CorporationId from selected corp on
                   
                 };
                 _db.Insert(ds);

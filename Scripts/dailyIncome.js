@@ -2,61 +2,18 @@
     return "$" + value.toFixed(2);
 }
 
-define(['knockout', 'xhr','lodash', 'jquery', 'knockout.mapping', 'utils'], function (ko, xhr, _, $, mapping) {
-    "use strict";
-    return function () {
+define(['knockout', 'xhr', 'lodash', 'jquery', 'knockout.mapping', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpIncomesVm', 'DailyIncome/dailyCorpCashDrawerVm', 'utils'], function (ko, xhr, _, $, mapping, dCompVm, dCorpVm, dCorpCashDrawerVm) {
+
+    return function (rawModel) {
         var self = this;
 
         self.dailyIncomes = ko.observableArray();
-       
-        self.LineVm = function (data) {
-            var self = this;
-            self.DailyCompanyServiceIncomeId = ko.observable(data.DailyCompanyServiceIncomeId);
-            self.CompanyServiceProvidedId = ko.observable(data.CompanyServiceProvidedId);
-            self.CompanyServiceProvidedName = ko.observable(data.CompanyServiceProvidedName);
-            self.IncomeAmount = ko.observable(data.IncomeAmount);
-            self.DailyCompanyCommission = ko.observable(data.DailyCompanyCommission);
-            self.DailyCorporationCommission = ko.observable(data.DailyCorporationCommission);
-            self.DailyServiceDate = ko.observable(data.DailyServiceDate);
-            self.DailyCorporationIncomeTotal = ko.pureComputed(function () {
-                return parseFloat(self.IncomeAmount() ? self.IncomeAmount() : 0) + parseFloat(self.DailyCompanyCommission() ? self.DailyCompanyCommission() : 0) + parseFloat(self.DailyCorporationCommission() ? self.DailyCorporationCommission() : 0);
-            });
-            self.DailyCompanyIncomeTotal = ko.pureComputed(function () {
-                return parseFloat(self.IncomeAmount() ? self.IncomeAmount() : 0) + parseFloat(self.DailyCompanyCommission() ? self.DailyCompanyCommission() : 0);
-            });
-            self.ManualCompanyServiceName = ko.observable(data.ManualCompanyServiceName);
-            self.IsPayout = ko.observable(data.IsPayout);
-            self.IsSaving = ko.observable(false);
-            var save = ko.computed(function () {
-                var incomeAmount = self.IncomeAmount();
-                var dailyCompanyCommission = self.DailyCompanyCommission();
-                var dailyCorporationCommission = self.DailyCorporationCommission();
-                var manualCompanyServiceName = self.ManualCompanyServiceName();
-                if (ko.computedContext.isInitial()) return;
-                self.IsSaving(true);
-                $.ajax({
-                    url: '/DailyIncome/SaveDailyCompanyIncome',
-                    type: 'POST',
-                    dataType: 'json',
-                    contentType: 'application/json; charset=utf-8',
-                    data: JSON.stringify({
-                        dailyCompanyServiceIncomeId: self.DailyCompanyServiceIncomeId(),
-                        incomeAmount: incomeAmount,
-                        dailyCompanyCommission: dailyCompanyCommission,
-                        dailyCorporationCommission: dailyCorporationCommission,
-                        manualCompanyServiceName: manualCompanyServiceName,
-                        dailyServiceDate: getParameterByName('serviceDate')
-                    })
-                }).done(function (data) {
-                    self.DailyCompanyServiceIncomeId(data);
-                    self.IsSaving(false);
-                });;
+        self.initialCash = ko.observable();
+        self.bankDrawer = ko.observable();
+        self.dailyCorporationIncomes = ko.observableArray();      
+        self.dailyCorporationCashDrawers = ko.observableArray();
 
-            });
-            save.extend({ rateLimit: { timeout: 500, method: "notifyWhenChangesStop" } });
-        };
-        
-       
+        //Company Income Totals
         self.IncomeAmountGrandTotal = ko.pureComputed(function () {
             var total = 0;
             $.each(self.dailyIncomes(), function () { total += parseFloat(this.IncomeAmount() ? this.IncomeAmount():0) });
@@ -83,10 +40,25 @@ define(['knockout', 'xhr','lodash', 'jquery', 'knockout.mapping', 'utils'], func
             return total;
         });
 
-        
+        //Corporation Income Totals
+        self.corporationIncomeAmountGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCorporationIncomes(), function () { total += parseFloat(this.incomeAmount() ? this.incomeAmount() : 0) });
+            return total;
+        });
+        self.corporationCommissionAmountGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCorporationIncomes(), function () { total += parseFloat(this.dailyCorporationCommission() ? this.dailyCorporationCommission() : 0) });
+            return total;
+        });
+        self.corporationGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCorporationIncomes(), function () { total += parseFloat(this.dailyCorporationIncomeTotal() ? this.dailyCorporationIncomeTotal() : 0) });
+            return total;
+        });
 
         self.addDailyIncome = function () {
-            self.dailyIncomes.push(new self.LineVm({
+            self.dailyIncomes.push(new dCompVm({
                 DailyCompanyServiceIncomeId: null, CompanyServiceProvidedId: null, IncomeAmount: 0,
                 DailyCompanyCommission: 0, DailyCorporationCommission: 0, DailyServiceDate: getParameterByName('serviceDate'),
                 ManualCompanyServiceName: null, IsPayout:0
@@ -104,31 +76,39 @@ define(['knockout', 'xhr','lodash', 'jquery', 'knockout.mapping', 'utils'], func
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify({ dailyCompanyServiceIncomeId: data.DailyCompanyServiceIncomeId() })
             });
-
-           // xhr.jsonPost('/dailyIncome/remove', mapping.toJS(data));
         }
+
         self.reset =function() { return self.loadData() }
 
+        //self.loadData = function () {
+        //    $.ajax({
+        //        url: '/DailyIncome/GetAll',
+        //        type: 'POST',
+        //        dataType: 'json',
+        //        contentType: 'application/json; charset=utf-8',
+        //        data: JSON.stringify({
+        //            serviceDate: getParameterByName('serviceDate')
+        //        })
+        //    }).done(function(data) {
+
+        //        self.dailyIncomes(_.map(data, function (d) {
+        //            return new self.LineVm(d);
+        //        }));
+        //    });    
+        //};
         self.loadData = function () {
-            $.ajax({
-                url: '/DailyIncome/GetAll',
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify({
-                    serviceDate: getParameterByName('serviceDate')
-                })
-            }).done(function(data) {
-
-                self.dailyIncomes(_.map(data, function (d) {
-                    return new self.LineVm(d);
-                }));
-            });
-
-
-           
+            self.dailyIncomes(_.map(rawModel.DailyCompanyServiceIncomes, function (d) {
+                return new dCompVm(d);
+            }));
+            self.dailyCorporationCashDrawers(_.map(rawModel.DailyCorporationCashDrawers, function (d) {
+                return new dCorpCashDrawerVm(d);
+            }));
+            self.initialCash(rawModel.InitialCash);
+            self.bankDrawer(rawModel.BankDrawer);
+            self.dailyCorporationIncomes(_.map(rawModel.DailyCorporationServiceIncomes, function (d) {
+                return new dCorpVm(d);
+            }));
         };
-
       
 
         self.applyBindings = function () {

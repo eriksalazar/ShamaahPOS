@@ -205,11 +205,13 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CompanyServiceProvided.cs" />
     <Compile Include="Models\CorporationServiceProvided.cs" />
-    <Compile Include="Models\DailyCompanyPayout.cs" />
     <Compile Include="Models\DailyCorporationExpense.cs" />
     <Compile Include="Models\DailyCorporationReconciliation.cs" />
     <Compile Include="Models\DailyCorporationServiceIncome.cs" />
     <Compile Include="Models\DailyCompanyServiceIncome.cs" />
+    <Compile Include="Models\DailyCorporationServiceProvider.cs" />
+    <Compile Include="Models\DailyCorporationServiceViewModel.cs" />
+    <Compile Include="Models\DailyCorporationCashDrawer.cs" />
     <Compile Include="Models\DailyCorporationWithdrawal.cs" />
     <Compile Include="Models\DailyIncomeListProvider.cs" />
     <Compile Include="Models\ServiceProvided.cs" />
@@ -244,6 +246,9 @@
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Properties\PublishProfiles\ShamaahPOS.pubxml" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
+    <Content Include="Scripts\DailyIncome\dailyCorpCashDrawerVm.js" />
+    <Content Include="Scripts\DailyIncome\dailyCorpIncomesVm.js" />
+    <Content Include="Scripts\DailyIncome\dailyCompanyIncomesVm.js" />
     <Content Include="Scripts\jquery-2.1.3.js" />
     <Content Include="Scripts\jquery-2.1.3.min.js" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />

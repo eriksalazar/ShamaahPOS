@@ -6,22 +6,32 @@ using NPoco;
 
 namespace ShamaahPOS.Models
 {
-    [TableName("DailyCompanyServiceIncome")]
-    [PrimaryKey("DailyCompanyServiceIncomeId")]
+    [TableName("DailyCorporationServiceIncome")]
+    [PrimaryKey("DailyCorporationServiceIncomeId")]
     public class DailyCorporationServiceIncome
     {
-        [Column("DailyCompanyServiceIncomeId")]
+        [Column("DailyCorporationServiceIncomeId")]
         public int DailyCorporationServiceIncomeId { get; set; }
         [Column("CorporationServiceProvidedId")]
         public int CorporationServiceProvidedId { get; set; }
         [Column("DailyCorporationServiceIncomeAmount")]
-        public decimal DailyCorporationServiceIncomeAmount { get; set; }
+        public decimal? DailyCorporationServiceIncomeAmount { get; set; }
         [Column("DailyCorporationServiceIncomeDate")]
         public DateTime DailyCorporationServiceIncomeDate { get; set; }
         [Column("DailyCorporationServiceIncomeNote")]
         public string DailyCorporationServiceIncomeNote { get; set; }
         [Column("DailyCorporationServiceCommission")]
-        public decimal DailyCorporationServiceCommission { get; set; }
+        public decimal? DailyCorporationServiceCommission { get; set; }
 
+    }
+    public class DailyCorporationServiceIncomeRow
+    {
+        public int DailyCorporationServiceIncomeId { get; set; }
+        public int? CorporationServiceProvidedId { get; set; }
+        public string CorporationServiceProvidedName { get; set; }
+        public decimal? IncomeAmount { get; set; }
+        public decimal? DailyCorporationCommission { get; set; }
+        public DateTime DailyCorporationIncomeDate { get; set; }
+        public string DailyCorporationIncomeNote { get; set; }
     }
 }

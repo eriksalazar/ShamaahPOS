@@ -13,8 +13,17 @@ namespace ShamaahPOS.Controllers
     public class DailyIncomeController : Controller
     {
         private readonly IDatabase _db;
+        private readonly DailyCorporationServiceProvider _serviceProvider;
+
        // readonly Microsoft.AspNet.SignalR.IHubContext _hub;
-      
+        public DailyIncomeController()
+        {
+            IDatabase db = new Database("DefaultConnection");
+            _db = db;
+            DailyCorporationServiceProvider serviceProvider = new DailyCorporationServiceProvider();
+            _serviceProvider = serviceProvider;
+        }
+        
         //
         // GET: /DailyIncome/
         public ActionResult Index(int? month, int? year)
@@ -30,18 +39,15 @@ namespace ShamaahPOS.Controllers
         }
 
         //
-        // GET: /DailyIncome/Details/5
-        public ActionResult Details(int id)
+        // GET: /DailyIncome/Edit/
+        public ActionResult Detail(string serviceDate)
         {
-            return View();
-        }
+            serviceDate = Convert.ToDateTime(serviceDate).ToShortDateString();
+            ViewBag.serviceDate = serviceDate;
+            var model = _serviceProvider.Load(serviceDate);
 
-        public DailyIncomeController()
-        {
-            IDatabase db = new Database("DefaultConnection");
-            _db = db;
-        }
-
+            return View(model);
+        }       
         //
         // GET: /DailyIncome/Create
         public ActionResult Create(string serviceDate)
@@ -55,7 +61,7 @@ namespace ShamaahPOS.Controllers
                 var routeValues = new RouteValueDictionary {{"valid", 0}};
                 return RedirectToAction("Index", routeValues);
             }
-            _db.Execute("dbo.DailyIncomeServiceSetup @0", Convert.ToDateTime(todayServiceDate));
+            _db.Execute("dbo.DailyIncomeServiceSetup @0, @1", Convert.ToDateTime(todayServiceDate), 1); // TODO Pass corporationId
 
             var detailRouteValues = new RouteValueDictionary { { "serviceDate", serviceDate } };
 
@@ -110,70 +116,37 @@ namespace ShamaahPOS.Controllers
             _db.Delete("DailyCompanyServiceIncome", "DailyCompanyServiceIncomeId", ds, dailyCompanyServiceIncomeId);
         }
 
-        //
-        // POST: /DailyIncome/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public int? SaveDailyCorporationIncome(int? dailyCorporationServiceIncomeId, decimal? incomeAmount,
+             decimal? dailyCorporationCommission, string dailyServiceDate)
         {
-            try
+            if (dailyCorporationServiceIncomeId > 0)
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                var ds = _db.SingleById<DailyCorporationServiceIncome>(dailyCorporationServiceIncomeId);
+                ds.DailyCorporationServiceIncomeAmount = incomeAmount;
+                ds.DailyCorporationServiceCommission = dailyCorporationCommission;
+                _db.Update(ds);
+                return dailyCorporationServiceIncomeId;
             }
-            catch
+            else
             {
-                return View();
+                return 0;
             }
         }
-
-        //
-        // GET: /DailyIncome/Edit/5
-        public ActionResult Detail(string serviceDate)
-        {
-            serviceDate = Convert.ToDateTime(serviceDate).ToShortDateString();
-            ViewBag.serviceDate = serviceDate;
-            return View();
-        }
-
-        //
-        // POST: /DailyIncome/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public int? SaveDailyCorporationCashDrawer(int? dailyCorporationCashDrawerId, decimal? cashDrawerAmount,
+            string cashDrawerDate)
         {
-            try
+            if (dailyCorporationCashDrawerId > 0)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                var dcd = _db.SingleById<DailyCorporationCashDrawer>(dailyCorporationCashDrawerId);
+                dcd.CashDrawerAmount = cashDrawerAmount;
+                _db.Update(dcd);
+                return dailyCorporationCashDrawerId;
             }
-            catch
+            else
             {
-                return View();
-            }
-        }
-
-        //
-        // GET: /DailyIncome/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        //
-        // POST: /DailyIncome/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
+                return 0;
             }
         }
     }

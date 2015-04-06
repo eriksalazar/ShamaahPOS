@@ -17,6 +17,7 @@ namespace ShamaahPOS.Models
         public int DailyCompanyServiceIncomeId { get; set; }
         [Column("CompanyServiceProvidedId")]
         public int? CompanyServiceProvidedId  { get; set; }
+      
         [Column("IncomeAmount")]
         public decimal? IncomeAmount { get; set; }
         [Column("DailyCompanyCommission")]

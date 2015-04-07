@@ -11,9 +11,8 @@ namespace ShamaahPOS.Models
         public DailyCorporationCashDrawerRow[] DailyCorporationCashDrawers;
         public DailyCorporationServiceIncomeRow[] DailyCorporationServiceIncomes;
         public DailyCompanyServiceIncomeRow[] DailyCompanyPayouts;
-        public decimal BankDeposit;
-        public decimal MoneyTransferCancelled;
-        public string MoneyTransferCancelledNote;
+        public DailyCorporationWithdrawalRow[] DailyCorporationWithdrawals;
+
         public DailyCorporationExpense[] DailyCorporationExpenses;
         public DailyCorporationReconciliation[] DailyCorporationReconciliations;
     }

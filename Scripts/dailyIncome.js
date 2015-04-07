@@ -2,7 +2,7 @@
     return "$" + value.toFixed(2);
 }
 
-define(['knockout', 'xhr', 'lodash', 'jquery', 'knockout.mapping', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpIncomesVm', 'DailyIncome/dailyCorpCashDrawerVm', 'utils'], function (ko, xhr, _, $, mapping, dCompVm, dCorpVm, dCorpCashDrawerVm) {
+define(['knockout', 'lodash', 'jquery', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpIncomesVm', 'DailyIncome/dailyCorpCashDrawerVm', 'DailyIncome/dailyCorpWithdrawalVm'], function (ko, _, $, dCompVm, dCorpVm, dCorpCashDrawerVm, dCorpWithdrawalVm) {
 
     return function (rawModel) {
         var self = this;
@@ -12,6 +12,8 @@ define(['knockout', 'xhr', 'lodash', 'jquery', 'knockout.mapping', 'DailyIncome/
         self.bankDrawer = ko.observable();
         self.dailyCorporationIncomes = ko.observableArray();      
         self.dailyCorporationCashDrawers = ko.observableArray();
+        self.dailyCorporationWithdrawals = ko.observableArray();
+        self.dailyCompanyPayouts = ko.observableArray();
 
         //Company Income Totals
         self.IncomeAmountGrandTotal = ko.pureComputed(function () {
@@ -56,6 +58,29 @@ define(['knockout', 'xhr', 'lodash', 'jquery', 'knockout.mapping', 'DailyIncome/
             $.each(self.dailyCorporationIncomes(), function () { total += parseFloat(this.dailyCorporationIncomeTotal() ? this.dailyCorporationIncomeTotal() : 0) });
             return total;
         });
+        //Withdrawals Totals
+        self.corporationWithdrawalAmountGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCorporationWithdrawals(), function () { total += parseFloat(this.withdrawalAmount() ? this.withdrawalAmount() : 0) });
+            return total;
+        });
+       
+        //Company Payouts Total
+        self.payoutIncomeAmountGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCompanyPayouts(), function () { total += parseFloat(this.IncomeAmount() ? this.IncomeAmount() : 0) });
+            return total;
+        });
+        self.payoutCommissionCorporationAmountGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCompanyPayouts(), function () { total += parseFloat(this.DailyCorporationCommission() ? this.DailyCorporationCommission() : 0) });
+            return total;
+        });
+        self.payoutGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCompanyPayouts(), function () { total += parseFloat(this.DailyCorporationIncomeTotal() ? this.DailyCorporationIncomeTotal() : 0) });
+            return total;
+        });
 
         self.addDailyIncome = function () {
             self.dailyIncomes.push(new dCompVm({
@@ -80,22 +105,6 @@ define(['knockout', 'xhr', 'lodash', 'jquery', 'knockout.mapping', 'DailyIncome/
 
         self.reset =function() { return self.loadData() }
 
-        //self.loadData = function () {
-        //    $.ajax({
-        //        url: '/DailyIncome/GetAll',
-        //        type: 'POST',
-        //        dataType: 'json',
-        //        contentType: 'application/json; charset=utf-8',
-        //        data: JSON.stringify({
-        //            serviceDate: getParameterByName('serviceDate')
-        //        })
-        //    }).done(function(data) {
-
-        //        self.dailyIncomes(_.map(data, function (d) {
-        //            return new self.LineVm(d);
-        //        }));
-        //    });    
-        //};
         self.loadData = function () {
             self.dailyIncomes(_.map(rawModel.DailyCompanyServiceIncomes, function (d) {
                 return new dCompVm(d);
@@ -107,6 +116,12 @@ define(['knockout', 'xhr', 'lodash', 'jquery', 'knockout.mapping', 'DailyIncome/
             self.bankDrawer(rawModel.BankDrawer);
             self.dailyCorporationIncomes(_.map(rawModel.DailyCorporationServiceIncomes, function (d) {
                 return new dCorpVm(d);
+            }));
+            self.dailyCorporationWithdrawals(_.map(rawModel.DailyCorporationWithdrawals, function (d) {
+                return new dCorpWithdrawalVm(d);
+            }));
+            self.dailyCompanyPayouts(_.map(rawModel.DailyCompanyPayouts, function (d) {
+                return new dCompVm(d);
             }));
         };
       

@@ -18,7 +18,7 @@
                     <div class="hidden">
                         <span data-bind="value: dailyCorporationCashDrawerId" />
                     </div>
-                    <div class="pull-right" data-bind="if: IsSaving()" >Saving...</div>
+                    <div class="pull-right" data-bind="if: IsSaving()">Saving...</div>
                     <div class="col-md-3 pull-right">
                         <input class="text-right" data-bind="numeric: cashDrawerAmount, value:cashDrawerAmount, valueUpdate: 'afterkeydown'" />
                     </div>
@@ -36,30 +36,30 @@
                 <div class="row">
                     <div class="col-md-2">
                         <h4 class="list-group-item-heading">
-                            <span>Company</span>
+                            <span>Company Name</span>
                         </h4>
                     </div>
                     <div class="col-md-2">
                         <h4 class="list-group-item-heading">
-                            <span>Transfers/Income Amount</span>
+                            <span>Cash Money Transfers</span>
                         </h4>
                     </div>
                     <div class="col-md-2">
                         <h4 class="list-group-item-heading">
-                            <span>Commission Company Amount</span>
+                            <span>Company Commission</span>
                         </h4>
                     </div>
                     <div class="col-md-1">
                         <h4 class="list-group-item-heading">
-                            <span>Total Company Amount</span>
+                            <span>Total Company</span>
                         </h4>
                     </div>
                     <div class="col-md-2">
                         <h4 class="list-group-item-heading">
-                            <span>Commission Corp Amount</span>
+                            <span>Shamaah Commission</span>
                         </h4>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-2 text-right">
                         <h4 class="list-group-item-heading">
                             <span>Total</span>
                         </h4>
@@ -95,18 +95,12 @@
                     </div>
                     <div class="col-md-1 text-right">
                         <span data-bind="text: formatCurrency(DailyCompanyIncomeTotal())" />
-
-
                     </div>
                     <div class="col-md-2">
-
                         <input data-bind="numeric:DailyCorporationCommission, value: DailyCorporationCommission, valueUpdate: 'afterkeydown'" class="text-right" />
-
                     </div>
-                    <div class="col-md-1 text-right">
-
+                    <div class="col-md-2 text-right">
                         <span data-bind="text: formatCurrency(DailyCorporationIncomeTotal())" />
-
                     </div>
                     <div data-bind="if: IsSaving()" class="">Saving...</div>
                     <div class="col-md-1" data-bind="visible: CompanyServiceProvidedId() ==null">
@@ -143,14 +137,12 @@
                             <span data-bind="text: formatCurrency(CommissionCorporationAmountGrandTotal())" />
                         </h5>
                     </div>
-                    <div class="col-md-1 text-right">
+                    <div class="col-md-2 text-right">
                         <h5 class=" list-group-item-heading">
                             <span data-bind="text: formatCurrency(GrandTotal())" />
                         </h5>
                     </div>
                 </div>
-
-
             </div>
         </div>
 
@@ -166,7 +158,7 @@
                 <div class="row">
                     <div class="col-md-5 ">
                         <h4 class="list-group-item-heading">
-                            <span>Services</span>
+                            <span>Other Services</span>
                         </h4>
                     </div>
                     <div class="col-md-2">
@@ -179,7 +171,7 @@
                             <span>Commission Amount</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-right">
                         <h4 class="list-group-item-heading">
                             <span>Total</span>
                         </h4>
@@ -201,12 +193,12 @@
                         <input data-bind="numeric: incomeAmount, value:incomeAmount, valueUpdate: 'afterkeydown'" class="text-right" />
                     </div>
                     <div class="col-md-2" data-bind="visible: corporationServiceProvidedId() !=7 ">
-                       
+
                     </div>
                     <div class="col-md-2 text-right">
                         <input data-bind="numeric: dailyCorporationCommission, value:dailyCorporationCommission, valueUpdate: 'afterkeydown'" class="text-right" />
                     </div>
-                    <div class="col-md-1 text-right">
+                    <div class="col-md-2 text-right">
                         <span data-bind="text: formatCurrency(dailyCorporationIncomeTotal())" />
                     </div>
                     <div data-bind="if: IsSaving()" class="">Saving...</div>
@@ -229,7 +221,7 @@
                             <span data-bind="text: formatCurrency(corporationCommissionAmountGrandTotal())" />
                         </h5>
                     </div>
-                    <div class="col-md-1 text-right">
+                    <div class="col-md-2 text-right">
                         <h5 class="list-group-item-heading">
                             <span data-bind="text: formatCurrency(corporationGrandTotal())" />
                         </h5>
@@ -240,9 +232,14 @@
         <div class="list-group well" id="divWithdrawals">
             <div class="list-group-item">
                 <div class="row">
-                    <div class="col-md-7 ">
+                    <div class="col-md-5 ">
                         <h4 class="list-group-item-heading">
                             <span>Withdrawals</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="list-group-item-heading">
+                            <span>Note</span>
                         </h4>
                     </div>
                     <div class="col-md-2">
@@ -250,7 +247,7 @@
                             <span>Amount</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-right">
                         <h4 class="list-group-item-heading">
                             <span>Total</span>
                         </h4>
@@ -260,70 +257,65 @@
             </div>
             <div class="list-group-item">
                 <div class="row">
-                    <div class="col-md-7 ">
+                    <div class="col-md-5 ">
                         <h4 class="list-group-item-heading">
                             <a href="#myPayoutModal" data-toggle="modal">Payouts</a>
                         </h4>
                     </div>
-
-                    <div class="col-md-3">
+                    <div class="col-md-2">
 
                     </div>
-                    <div class="col-md-3">
-
+                    <div class="col-md-2 text-right">
+                        <span data-bind="text: formatCurrency(payoutGrandTotal())" />
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <span data-bind="text: formatCurrency(payoutGrandTotal())" />
                     </div>
 
                 </div>
 
+                <div data-bind="foreach: dailyCorporationWithdrawals">
+                    <div class="row">
+                        <div class="hidden">
+                            <span data-bind="value: dailyCorporationWithdrawalId" />
+                        </div>
+                        <div class="col-md-5 ">
+                            <h5 class="list-group-item-heading">
+                                <span data-bind="text: withdrawalTypeName"></span>
+                            </h5>
+                        </div>
+                        <div class="col-md-2">
+                            <input data-bind="value: withdrawalDescription, valueUpdate: 'afterkeydown'" />
+                        </div>
+                        <div class="col-md-2 text-right">
+                            <input class="text-right" data-bind="numeric: withdrawalAmount, value:withdrawalAmount, valueUpdate: 'afterkeydown'" />
+                        </div>
 
-                <div class="row">
-                    <div class="col-md-7 ">
-                        <h4 class="list-group-item-heading">
-                            <span>Bank Deposits</span>
-                        </h4>
+                        <div class="col-md-2 text-right">
+                            <span data-bind="text: formatCurrency(withdrawalAmountTotal())" />
+                        </div>
+                        <div data-bind="if: IsSaving()" class="">Saving...</div>
                     </div>
-
-                    <div class="col-md-2">
-
-                        <input />
-
-                    </div>
-                    <div class="col-md-2">
-
-                    </div>
-
                 </div>
-
-                <div class="row">
-                    <div class="col-md-7 ">
-                        <h4 class="list-group-item-heading">
-                            <span>Money Transfer Cancelled</span>
-                        </h4>
-                    </div>
-
-                    <div class="col-md-2">
-                        @* Add ability to enter notes here *@
-                    </div>
-                    <div class="col-md-2">
-
-                    </div>
-
-                </div>
-
 
             </div>
             <div class="list-group-item">
                 <div class="row">
-                    <div class="col-md-7 ">
+                    <div class="col-md-5 ">
                         <h4 class="list-group-item-heading">
                             <span>Total</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
-
+                    <div class="col-md-2"></div>
+                    <div class="col-md-2 text-right">
+                        <h5 class="list-group-item-heading">
+                            <span class="text-right" data-bind="text: formatCurrency(corporationWithdrawalAmountGrandTotal())" />
+                        </h5>
                     </div>
-                    <div class="col-md-2">
-
+                    <div class="col-md-2 text-right">
+                        <h5 class="list-group-item-heading">
+                            <span class="text-right" data-bind="text: formatCurrency(corporationWithdrawalAmountGrandTotal())" />
+                        </h5>
                     </div>
 
                 </div>
@@ -375,7 +367,7 @@
                 <div class="row">
                     <div class="col-md-7">
                         <h4 class="list-group-item-heading">
-                            <a href="#myMoneyOtherExpenes" data-toggle="modal">Other Expenses</a>
+                            <span>Other Expenses</span>
                         </h4>
                     </div>
 
@@ -610,83 +602,74 @@
                                         <span>Payout Company</span>
                                     </h4>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <h4 class="list-group-item-heading">
                                         <span>Amount</span>
                                     </h4>
                                 </div>
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <h4 class="list-group-item-heading">
                                         <span>Commission</span>
                                     </h4>
                                 </div>
-
+                                <div class="col-md-2">
+                                    <h4 class="list-group-item-heading">
+                                        <span>Total</span>
+                                    </h4>
+                                </div>
                             </div>
                         </div>
+                        <div class="list-group-item" data-bind="foreach: dailyCompanyPayouts">
+                            <div class="row">
+                                <div class="hidden">
+                                    <span data-bind="value: DailyCompanyServiceIncomeId" />
+                                </div>
+                                <div class="col-md-4 ">
+                                    <h5 class="list-group-item-heading">
+                                        <span data-bind="text: CompanyServiceProvidedName" />
+                                    </h5>
+                                </div>
+                                <div class="col-md-3">
+                                    <input style="width:100px" data-bind="numeric: IncomeAmount, value:IncomeAmount, valueUpdate: 'afterkeydown'" class="text-right" />
+                                </div>
+                                <div class="col-md-3">
+                                    <input style="width:100px" data-bind="numeric:DailyCorporationCommission, value: DailyCorporationCommission, valueUpdate: 'afterkeydown'" class="text-right" />
+                                </div>
+                                <div class="col-md-2 text-right">
+                                    <span data-bind="text: formatCurrency(DailyCorporationIncomeTotal())" />
+                                </div>
+                                <div data-bind="if: IsSaving()" class="">Saving...</div>
+                            </div>
+                        </div>
+
                         <div class="list-group-item">
                             <div class="row">
-                                <div class="col-md-4 ">
+                                <div class="col-md-4">
                                     <h4 class="list-group-item-heading">
-                                        <span>Money Gram</span>
+                                        <span>Total</span>
                                     </h4>
                                 </div>
-                                <div class="col-md-2">
-
-                                    <input />
-
+                                <div class="col-md-3 text-right">
+                                    <h5 class="list-group-item-heading">
+                                        <span data-bind="text: formatCurrency(payoutIncomeAmountGrandTotal())" />
+                                    </h5>
                                 </div>
-                                <div class="col-md-2">
-
-                                    <input />
-
+                                <div class="col-md-3 text-right">
+                                    <h5 class="list-group-item-heading">
+                                        <span data-bind="text: formatCurrency(payoutCommissionCorporationAmountGrandTotal())" />
+                                    </h5>
                                 </div>
-
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col-md-4 ">
-                                    <h4 class="list-group-item-heading">
-                                        <span>Vigo</span>
-                                    </h4>
+                                <div class="col-md-2 text-right">
+                                    <h5 class=" list-group-item-heading">
+                                        <span data-bind="text: formatCurrency(payoutGrandTotal())" />
+                                    </h5>
                                 </div>
-                                <div class="col-md-2">
-
-                                    <input />
-
-                                </div>
-                                <div class="col-md-2">
-
-                                    <input />
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col-md-4 ">
-                                    <h4 class="list-group-item-heading">
-                                        <span>Ria Envios</span>
-                                    </h4>
-                                </div>
-                                <div class="col-md-2">
-
-                                    <input />
-
-                                </div>
-                                <div class="col-md-2">
-
-                                    <input />
-
-                                </div>
-
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        @*<button type="button" class="btn btn-primary">Save changes</button>*@
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->

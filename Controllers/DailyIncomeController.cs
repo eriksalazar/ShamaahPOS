@@ -149,5 +149,22 @@ namespace ShamaahPOS.Controllers
                 return 0;
             }
         }
+        [HttpPost]
+        public int? SaveDailyCorporationWithdrawal(int? dailyCorporationWithdrawalId, decimal? withdrawalAmount,
+           string withdrawalDescription, string withdrawalDate)
+        {
+            if (dailyCorporationWithdrawalId > 0)
+            {
+                var dcw = _db.SingleById<DailyCorporationWithdrawal>(dailyCorporationWithdrawalId);
+                dcw.WithdrawalAmount = withdrawalAmount;
+                dcw.WithdrawalDescription = withdrawalDescription;
+                _db.Update(dcw);
+                return dailyCorporationWithdrawalId;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }

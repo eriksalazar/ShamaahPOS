@@ -30,39 +30,39 @@
         <table id="table-style" class="table table-hover table-striped table-condensed table-bordered" data-height="400" data-row-style="rowStyle">
             <thead>
                 <tr>
-                    <th class="col-md-2">
+                    <th class="col-md-2 text-center">
                         <i class="glyphicon glyphicon-star"></i>
                         Date
                     </th>
-                    <th class="col-md-2">
+                    <th class="col-md-2 text-center">
                         Total Cash Money Transfers
                     </th>
-                    <th class="col-md-2">
-                        Company Commission 
+                    <th class="col-md-2 text-center">
+                        Company Commission
                     </th>
                     @*<th class="col-md-2">
                             Company Total
                         </th>*@
-                    <th class="col-md-2">
+                    <th class="col-md-2 text-center">
                         Shamaah Commission
                     </th>
-                    <th class="col-md-2">
+                    <th class="col-md-2 text-center">
                         Other Services Amount
                     </th>
-                    <th class="col-md-2">
+                    <th class="col-md-2 text-center">
                         Withdrawal Amount
                     </th>
 
-                    <th class="col-md-2">
+                    <th class="col-md-2 text-center">
                         Expenes and Debits
                     </th>
-                    <th class="col-md-2">
+                    <th class="col-md-2 text-center">
                         Total Due Cash
                     </th>
-                    <th class="col-md-2">
+                    <th class="col-md-2 text-center">
                         Total Existing Cash
                     </th>
-                    <th class="col-md-2">
+                    <th class="col-md-2 text-center">
                         Cash Difference
                     </th>
                 </tr>
@@ -72,7 +72,7 @@
                 @foreach (var item in @Model.DailyCorporationIncomeList)
                 {
                     <tr>
-                        <td>
+                        <td class=" text-center">
                             @{
                     if (@item.DailyServiceDate.ToShortDateString() != "1/1/0001")
                     {
@@ -86,31 +86,31 @@
                             }
 
                         </td>
-                        <td>
+                        <td class="text-right">
                             @string.Format("{0:C}", @item.DailyIncomeAmountTotal)
                         </td>
-                        <td>
+                        <td class="text-right">
                             @string.Format("{0:C}", @item.DailyCompanyCommissionTotal)
                         </td>
-                        <td>
+                        <td class="text-right">
                             @string.Format("{0:C}", @item.DailyCorporationCommissionTotal)
                         </td>
-                        <td>
+                        <td class="text-right">
                             @string.Format("{0:C}", @item.DailyCorporationServiceAmountTotal)
                         </td>
-                        <td>
+                        <td class="text-right">
                             @string.Format("{0:C}", @item.DailyCorporationWithdrawalsTotal)
                         </td>
-                        <td>
+                        <td class="text-right">
                             @string.Format("{0:C}", @item.DailyCorporationExpensesTotal)
                         </td>
-                        <td>
+                        <td class="text-right">
                             @string.Format("{0:C}", @item.DailyCashTotal)
                         </td>
-                        <td>
+                        <td class="text-right">
                             @string.Format("{0:C}", @item.DailyExistingCashTotal)
                         </td>
-                        <td>
+                        <td class="text-right">
                             @string.Format("{0:C}", @item.CashDifference)
                         </td>
                     </tr>

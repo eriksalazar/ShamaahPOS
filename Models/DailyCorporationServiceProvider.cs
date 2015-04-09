@@ -31,6 +31,9 @@ namespace ShamaahPOS.Models
             vm.DailyCompanyPayouts = _db.Fetch<DailyCompanyServiceIncomeRow>(
                 "exec dbo.getDailyCompanyIncome @0, @1, @2", Convert.ToDateTime(todayServiceDate), 1, 1).ToArray();
 
+            vm.DailyCorporationReconciliations = _db.Fetch<DailyCorporationReconciliationRow>(
+               "exec dbo.getDailyCorporationReconciliation @0, @1", Convert.ToDateTime(todayServiceDate), 1).ToArray();
+
             return vm;
         }
 

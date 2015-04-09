@@ -3,6 +3,7 @@ define(['knockout', 'lodash', 'jquery', 'knockout.mapping', 'utils'], function (
 
     return function (data) {
         var self = this;
+        self.IsSaving = ko.observable(false);
         self.DailyCompanyServiceIncomeId = ko.observable(data.DailyCompanyServiceIncomeId);
         self.CompanyServiceProvidedId = ko.observable(data.CompanyServiceProvidedId);
         self.CompanyServiceProvidedName = ko.observable(data.CompanyServiceProvidedName);
@@ -18,7 +19,7 @@ define(['knockout', 'lodash', 'jquery', 'knockout.mapping', 'utils'], function (
         });
         self.ManualCompanyServiceName = ko.observable(data.ManualCompanyServiceName);
         self.IsPayout = ko.observable(data.IsPayout);
-        self.IsSaving = ko.observable(false);
+       
         var save = ko.computed(function () {
             var incomeAmount = self.IncomeAmount();
             var dailyCompanyCommission = self.DailyCompanyCommission();

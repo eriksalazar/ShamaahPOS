@@ -3,6 +3,7 @@ define(['knockout', 'lodash', 'jquery', 'knockout.mapping', 'utils'], function (
 
     return function (data) {
         var self = this;
+        self.IsSaving = ko.observable(false);
         self.dailyCorporationCashDrawerId = ko.observable(data.DailyCorporationCashDrawerId);
         self.corporationId = ko.observable(data.CorporationId);
         self.cashDrawerTypeId = ko.observable(data.CashDrawerTypeId);
@@ -14,7 +15,7 @@ define(['knockout', 'lodash', 'jquery', 'knockout.mapping', 'utils'], function (
             return parseFloat(self.cashDrawerAmount() ? self.cashDrawerAmount() : 0);
         });
 
-        self.IsSaving = ko.observable(false);
+       
         var save = ko.computed(function () {
             var cashDrawerAmount = self.cashDrawerAmount();
              

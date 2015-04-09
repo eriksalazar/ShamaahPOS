@@ -19,6 +19,15 @@ namespace ShamaahPOS.Models
         [Column("DenominationTypeId")]
         public int DenominationTypeId { get; set; }
         [Column("ReconciliationAmount")]
-        public decimal ReconciliationAmount { get; set; }
+        public decimal? ReconciliationAmount { get; set; }
+    }
+    public class DailyCorporationReconciliationRow
+    {
+        public int DailyCorporationReconciliationId { get; set; }
+        public int CorporationId { get; set; }
+        public DateTime ReconciliationDate { get; set; }
+        public int DenominationTypeId { get; set; }
+        public string DenominationTypeName { get; set; }
+        public decimal? ReconciliationAmount { get; set; }
     }
 }

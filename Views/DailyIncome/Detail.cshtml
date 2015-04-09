@@ -403,12 +403,12 @@
         <div class="list-group well" id="divReconciliation">
             <div class="list-group-item">
                 <div class="row bg-danger">
-                    <div class="col-md-7 ">
+                    <div class="col-md-9 ">
                         <h4 class="list-group-item-heading">
                             <span class="alert-warning">Reconciliation per Denomination</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2  text-right">
                         <h4 class="list-group-item-heading">
                             <span class="alert-warning">Total</span>
                         </h4>
@@ -417,171 +417,31 @@
 
                 </div>
             </div>
-            <div class="list-group-item">
+            <div class="list-group-item" data-bind="foreach: dailyCorporationReconciliations">
                 <div class="row">
-                    <div class="col-md-7 ">
-                        <h4 class="list-group-item-heading">
-                            <span>$100</span>
-                        </h4>
+                    <div class="hidden">
+                        <span data-bind="value: dailyCorporationReconciliationId" />
                     </div>
-                    <div class="col-md-3">
-
+                    <div class="col-md-9 ">
+                        <h5 class="list-group-item-heading">
+                            <span data-bind="text: denominationTypeName"></span>
+                        </h5>
                     </div>
-
-                </div>
-
-
-                <div class="row">
-                    <div class="col-md-7 ">
-                        <h4 class="list-group-item-heading">
-                            <span>$50</span>
-                        </h4>
-                    </div>
-
                     <div class="col-md-2">
-
-                        <input />
-
+                        <input class="text-right" data-bind="numeric: reconciliationAmount, value: reconciliationAmount, valueUpdate: 'afterkeydown'" />
                     </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="col-md-7">
-                        <h4 class="list-group-item-heading">
-                            <span>$20</span>
-                        </h4>
-                    </div>
-
-                    <div class="col-md-2">
-
-                        <input />
-
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-7">
-                        <h4 class="list-group-item-heading">
-                            <span>$10</span>
-                        </h4>
-                    </div>
-
-                    <div class="col-md-2">
-
-                        <input />
-
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-7">
-                        <h4 class="list-group-item-heading">
-                            <span>$10</span>
-                        </h4>
-                    </div>
-
-                    <div class="col-md-2">
-
-                        <input />
-
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-7">
-                        <h4 class="list-group-item-heading">
-                            <span>$5</span>
-                        </h4>
-                    </div>
-
-                    <div class="col-md-2">
-
-                        <input />
-
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-7">
-                        <h4 class="list-group-item-heading">
-                            <span>$1</span>
-                        </h4>
-                    </div>
-
-                    <div class="col-md-2">
-
-                        <input />
-
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-7">
-                        <h4 class="list-group-item-heading">
-                            <span>$0.25</span>
-                        </h4>
-                    </div>
-
-                    <div class="col-md-2">
-
-                        <input />
-
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-7">
-                        <h4 class="list-group-item-heading">
-                            <span>$0.10</span>
-                        </h4>
-                    </div>
-
-                    <div class="col-md-2">
-
-                        <input />
-
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-7">
-                        <h4 class="list-group-item-heading">
-                            <span>$0.05</span>
-                        </h4>
-                    </div>
-
-                    <div class="col-md-2">
-
-                        <input />
-
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-md-7">
-                        <h4 class="list-group-item-heading">
-                            <span>$0.01</span>
-                        </h4>
-                    </div>
-
-                    <div class="col-md-2">
-
-                        <input />
-
-                    </div>
-
+                    <div data-bind="if: IsSaving()" class="">Saving...</div>
                 </div>
             </div>
             <div class="list-group-item">
                 <div class="row">
-                    <div class="col-md-7 ">
+                    <div class="col-md-9">
                         <h4 class="list-group-item-heading">
                             <span>Total</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
-
+                    <div class="col-md-2 text-right">
+                        <span class="text-right" data-bind="text: formatCurrency(corporationReconciliationAmountGrandTotal())" />
                     </div>
 
                 </div>

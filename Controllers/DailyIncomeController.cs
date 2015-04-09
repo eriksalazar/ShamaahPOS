@@ -166,5 +166,21 @@ namespace ShamaahPOS.Controllers
                 return 0;
             }
         }
+        [HttpPost]
+        public int? SaveDailyCorporationReconciliation(int? dailyCorporationReconciliationId, decimal? reconciliationAmount,
+            string reconciliationDate)
+        {
+            if (dailyCorporationReconciliationId > 0)
+            {
+                var dcr = _db.SingleById<DailyCorporationReconciliation>(dailyCorporationReconciliationId);
+                dcr.ReconciliationAmount = reconciliationAmount;
+                _db.Update(dcr);
+                return dailyCorporationReconciliationId;
+            }
+            else
+            {
+                return 0;
+            }
+        }
     }
 }

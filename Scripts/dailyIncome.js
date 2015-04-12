@@ -2,7 +2,7 @@
     return "$" + value.toFixed(2);
 }
 
-define(['knockout', 'lodash', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpIncomesVm', 'DailyIncome/dailyCorpCashDrawerVm', 'DailyIncome/dailyCorpWithdrawalVm', 'DailyIncome/dailyCorpReconciliationVm'], function (ko, _, dCompVm, dCorpVm, dCorpCashDrawerVm, dCorpWithdrawalVm, dCorpReconciliationVm) {
+define(['knockout', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpIncomesVm', 'DailyIncome/dailyCorpCashDrawerVm', 'DailyIncome/dailyCorpWithdrawalVm', 'DailyIncome/dailyCorpReconciliationVm', 'DailyIncome/dailyCorpExpenseVm'], function (ko, dCompVm, dCorpVm, dCorpCashDrawerVm, dCorpWithdrawalVm, dCorpReconciliationVm, dCorpExpenseVm) {
 
     return function (rawModel) {
         var self = this;
@@ -15,6 +15,7 @@ define(['knockout', 'lodash', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/
         self.dailyCorporationWithdrawals = ko.observableArray();
         self.dailyCompanyPayouts = ko.observableArray();
         self.dailyCorporationReconciliations = ko.observableArray();
+        self.dailyCorporationExpenses = ko.observableArray();
         //Company Income Totals
         self.IncomeAmountGrandTotal = ko.pureComputed(function () {
             var total = 0;
@@ -89,25 +90,53 @@ define(['knockout', 'lodash', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/
             $.each(self.dailyCorporationReconciliations(), function () { total += parseFloat(this.reconciliationAmount() ? this.reconciliationAmount() : 0) });
             return total;
         });
-
+        //Expenses Totals
+        self.corporationExpenseAmountGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCorporationExpenses(), function () { total += parseFloat(this.expenseAmount() ? this.expenseAmount() : 0) });
+            return total;
+        });
+        //Daily Income Add/Remove
         self.addDailyIncome = function () {
             self.dailyIncomes.push(new dCompVm({
                 DailyCompanyServiceIncomeId: null, CompanyServiceProvidedId: null, IncomeAmount: 0,
                 DailyCompanyCommission: 0, DailyCorporationCommission: 0, DailyServiceDate: getParameterByName('serviceDate'),
                 ManualCompanyServiceName: null, IsPayout:0
-                }));
-            
-            
+                }));         
         };
         
         self.removeDailyIncome = function (data) {
+            var conf = confirm("Are you sure?");
+            if (conf == false) return;
             self.dailyIncomes.remove(data);
             $.ajax({
-                url: '/DailyIncome/Remove',
+                url: '/DailyIncome/RemoveDailyCompanyServiceIncome',
                 type: 'POST',
                 dataType: 'json',
                 contentType: 'application/json; charset=utf-8',
                 data: JSON.stringify({ dailyCompanyServiceIncomeId: data.DailyCompanyServiceIncomeId() })
+            });
+        }
+        //Daily Expense Add/Remove
+        self.addDailyOtherExpense = function () {
+            self.dailyCorporationExpenses.push(new dCorpExpenseVm({
+                dailyCorporationExpenseId: null, expenseTypeId: 2, corporationId: 1,
+                dailyCorporationExpenseAmunt: 0, DailyCorporationExpenseDate: getParameterByName('serviceDate'),
+                dailyCorporationExpenseNote: null
+            }));
+        };
+
+        self.removeDailyOtherExpense = function (data) {
+            var conf = confirm("Are you sure?");
+            if (conf == false) return;
+
+            self.dailyCorporationExpenses.remove(data);
+            $.ajax({
+                url: '/DailyIncome/RemoveDailyOtherExpense',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ dailyCorporationExpenseId: data.dailyCorporationExpenseId() })
             });
         }
 
@@ -133,6 +162,9 @@ define(['knockout', 'lodash', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/
 
             self.dailyCorporationReconciliations(_.map(rawModel.DailyCorporationReconciliations, function (d) {
                 return new dCorpReconciliationVm(d);
+            }));
+            self.dailyCorporationExpenses(_.map(rawModel.DailyCorporationExpenses, function (d) {
+                return new dCorpExpenseVm(d);
             }));
         };
       

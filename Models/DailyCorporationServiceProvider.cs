@@ -33,6 +33,8 @@ namespace ShamaahPOS.Models
 
             vm.DailyCorporationReconciliations = _db.Fetch<DailyCorporationReconciliationRow>(
                "exec dbo.getDailyCorporationReconciliation @0, @1", Convert.ToDateTime(todayServiceDate), 1).ToArray();
+            vm.DailyCorporationExpenses = _db.Fetch<DailyCorporationExpenseRow>(
+               "exec dbo.getDailyCorporationExpense @0, @1", Convert.ToDateTime(todayServiceDate), 1).ToArray();
 
             return vm;
         }

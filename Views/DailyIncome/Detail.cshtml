@@ -11,8 +11,10 @@
         <h2>Daily Income Report for @ViewBag.serviceDate</h2>
         <hr />
         @Html.ValidationSummary(true)
-
-        <div class="list-group">
+        <div>
+            @Html.ActionLink("Back to Summary List", "Index")
+        </div>
+        <div class="list-group well">
             <div class="list-group-item" data-bind="foreach:dailyCorporationCashDrawers">
                 <div class="row">
                     <div class="hidden">
@@ -34,27 +36,27 @@
         <div class="list-group well">
             <div class="list-group-item">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-center">
                         <h4 class="list-group-item-heading">
                             <span>Company Name</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2  text-center">
                         <h4 class="list-group-item-heading">
                             <span>Cash Money Transfers</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-center">
                         <h4 class="list-group-item-heading">
                             <span>Company Commission</span>
                         </h4>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-1 text-center">
                         <h4 class="list-group-item-heading">
                             <span>Total Company</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-center">
                         <h4 class="list-group-item-heading">
                             <span>Shamaah Commission</span>
                         </h4>
@@ -144,15 +146,16 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-5 col-md-10">
-                @*<button data-bind="click: save" class="btn btn-default">Save</button>*@
-                <button data-bind="click: addDailyIncome" class="btn btn-default">Add New</button>
-                <button data-bind="click: reset" class="btn btn-default">Reset</button>
+            <div class="form-group">
+                <div class="col-md-offset-5 col-md-10">
+                    @*<button data-bind="click: save" class="btn btn-default">Save</button>*@
+                    <button data-bind="click: addDailyIncome" class="btn btn-default">Add New</button>
+                    <button data-bind="click: reset" class="btn btn-default">Reset</button>
+                </div>
             </div>
         </div>
+
+
         <div class="list-group well">
             <div class="list-group-item">
                 <div class="row">
@@ -161,12 +164,12 @@
                             <span>Other Services</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-center">
                         <h4 class="list-group-item-heading">
                             <span>Amount</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-center">
                         <h4 class="list-group-item-heading">
                             <span>Commission Amount</span>
                         </h4>
@@ -237,12 +240,12 @@
                             <span>Withdrawals</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-center">
                         <h4 class="list-group-item-heading">
                             <span>Note</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-center">
                         <h4 class="list-group-item-heading">
                             <span>Amount</span>
                         </h4>
@@ -295,6 +298,7 @@
                             <span data-bind="text: formatCurrency(withdrawalAmountTotal())" />
                         </div>
                         <div data-bind="if: IsSaving()" class="">Saving...</div>
+
                     </div>
                 </div>
 
@@ -329,12 +333,13 @@
                             <span>Expenses</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
+                  
+                    <div class="col-md-2 text-center">
                         <h4 class="list-group-item-heading">
                             <span>Amount</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-right">
                         <h4 class="list-group-item-heading">
                             <span>Total</span>
                         </h4>
@@ -342,45 +347,36 @@
 
                 </div>
             </div>
-            <div class="list-group-item">
-
-
-
+            <div class="list-group-item" data-bind="foreach: dailyCorporationExpenses">
                 <div class="row">
+                    <div class="hidden">
+                        <span data-bind="value: dailyCorporationExpenseId" />
+                    </div>
                     <div class="col-md-7 ">
-                        <h4 class="list-group-item-heading">
-                            <span>Free Commissions</span>
-                        </h4>
+                        <h5 class="list-group-item-heading" data-bind="if: expenseTypeId() !=2">
+                            <span data-bind="text: expenseTypeName"></span>
+                        </h5>
+                        <div  data-bind="if: expenseTypeId() ==2 || dailyCorporationExpenseId() ==null">
+                            <input data-bind="value: expenseDescription, valueUpdate: 'afterkeydown'" />
+                        </div>
+                    </div>
+                   
+                    <div class="col-md-2 text-right">
+                        <input class="text-right" data-bind="numeric: expenseAmount, value:expenseAmount, valueUpdate: 'afterkeydown'" />
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-2 text-right">
+                        <span data-bind="text: formatCurrency(expenseAmountTotal())" />
+                    </div>
+                    <div data-bind="if: IsSaving()" class="">Saving...</div>
+                    <div class="col-md-1" data-bind="visible: expenseTypeId() ==2">
 
-                        <input />
+                        <a href="#" data-bind="click: $parent.removeDailyOtherExpense">Remove</a>
 
                     </div>
-                    <div class="col-md-2">
-
-                    </div>
-
                 </div>
 
-                <div class="row">
-                    <div class="col-md-7">
-                        <h4 class="list-group-item-heading">
-                            <span>Other Expenses</span>
-                        </h4>
-                    </div>
 
-                    <div class="col-md-2">
-
-                        <input />
-
-                    </div>
-                    <div class="col-md-2">
-
-                    </div>
-
-                </div>
             </div>
             <div class="list-group-item">
                 <div class="row">
@@ -389,13 +385,23 @@
                             <span>Total</span>
                         </h4>
                     </div>
-                    <div class="col-md-2">
-
+             
+                    <div class="col-md-2 text-right">
+                        <h5 class="list-group-item-heading">
+                            <span class="text-right" data-bind="text: formatCurrency(corporationExpenseAmountGrandTotal())" />
+                        </h5>
                     </div>
-                    <div class="col-md-2">
-
+                    <div class="col-md-2 text-right">
+                        <h5 class="list-group-item-heading">
+                            <span class="text-right" data-bind="text: formatCurrency(corporationExpenseAmountGrandTotal())" />
+                        </h5>
                     </div>
 
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-5 col-md-10">
+                    <button data-bind="click: addDailyOtherExpense" class="btn btn-default">Add New Expense</button>
                 </div>
             </div>
         </div>
@@ -541,7 +547,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Summary List", "Index")
 </div>
 
 @section scripts

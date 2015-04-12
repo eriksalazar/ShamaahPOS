@@ -110,7 +110,7 @@ namespace ShamaahPOS.Controllers
         }
      
         [HttpPost]
-        public void Remove(int? dailyCompanyServiceIncomeId)
+        public void RemoveDailyCompanyServiceIncome(int? dailyCompanyServiceIncomeId)
         {
             var ds = new DailyCompanyServiceIncome();
             _db.Delete("DailyCompanyServiceIncome", "DailyCompanyServiceIncomeId", ds, dailyCompanyServiceIncomeId);
@@ -181,6 +181,40 @@ namespace ShamaahPOS.Controllers
             {
                 return 0;
             }
+        }
+        [HttpPost]
+        public JsonResult SaveDailyCorporationExpense(int? dailyCorporationExpenseId, decimal? expenseAmount,
+           string expenseDescription, string expenseDate)
+        {
+            if (dailyCorporationExpenseId > 0)
+            {
+                var dce = _db.SingleById<DailyCorporationExpense>(dailyCorporationExpenseId);
+                dce.DailyCorporationExpenseAmount = expenseAmount;
+                dce.DailyCorporationExpenseNote = expenseDescription;
+                _db.Update(dce);
+                return Json(dce);
+            }
+            else
+            {
+                var dce = new DailyCorporationExpense
+                {
+                    ExpenseTypeId=2,//Other expenses
+                    CorporationId = 1, //TODO Change from user selection
+                    DailyCorporationExpenseDate = Convert.ToDateTime(expenseDate),
+                    DailyCorporationExpenseAmount= expenseAmount,
+                    DailyCorporationExpenseNote = expenseDescription
+                   
+                 };
+                _db.Insert(dce);
+                return Json(dce);
+                   
+            }
+        }
+        [HttpPost]
+        public void RemoveDailyOtherExpense(int? dailyCorporationExpenseId)
+        {
+            var ds = new DailyCorporationExpense();
+            _db.Delete("DailyCorporationExpense", "DailyCorporationExpenseId", ds, dailyCorporationExpenseId);
         }
     }
 }

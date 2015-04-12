@@ -17,11 +17,21 @@ namespace ShamaahPOS.Models
         public int ExpenseTypeId { get; set; }
         [Column("CorporationId")]
         public int CorporationId { get; set; }
-        [Column("DailyCorporationDate")]
-        public DateTime DailyCorporationDate { get; set; }
-        [Column("DailyCorporationExenseAmount")]
-        public decimal DailyCorporationExenseAmount { get; set; }
+        [Column("DailyCorporationExpenseDate")]
+        public DateTime DailyCorporationExpenseDate { get; set; }
+        [Column("DailyCorporationExpenseAmount")]
+        public decimal? DailyCorporationExpenseAmount { get; set; }
         [Column("DailyCorporationExpenseNote")]
+        public string DailyCorporationExpenseNote { get; set; }
+    }
+    public class DailyCorporationExpenseRow
+    {
+        public int DailyCorporationExpenseId { get; set; }
+        public int ExpenseTypeId { get; set; }
+        public int CorporationId { get; set; }
+        public String ExpenseTypeName { get; set; }
+        public DateTime DailyCorporationExpenseDate { get; set; }
+        public decimal? DailyCorporationExpenseAmount { get; set; }
         public string DailyCorporationExpenseNote { get; set; }
     }
 }

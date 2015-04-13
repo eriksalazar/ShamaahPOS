@@ -1,0 +1,79 @@
+﻿@using System
+@using System.IO
+@using System.Linq
+@using ClosedXML.Excel
+@model ShamaahPOS.Models.DailyIncomeViewModel
+@{
+    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+    Layout = null;
+
+    //set download file name
+    var fileName= "Monthly Summary Report " + DateTime.Now.ToString("M-d-yyyy h.mmtt") + ".xlsx";
+
+    string contentDisposition;
+    if (Request.Browser.Browser == "IE" && (Request.Browser.Version == "7.0" || Request.Browser.Version == "8.0"))
+    {
+        contentDisposition = "attachment; filename=" + Uri.EscapeDataString(fileName);
+    }
+    else
+    {
+        contentDisposition = "attachment; filename=\"" + fileName + "\"; filename*=UTF-8''" + Uri.EscapeDataString(fileName);
+    }
+
+    Response.AddHeader("content-disposition", contentDisposition);
+    
+    //create empty Excel file
+    var wb = new XLWorkbook(XLEventTracking.Disabled);  //disabling row/column renumbering upon inserts, for speed
+    var ws = wb.AddWorksheet("Summary");
+
+    //set header labels
+    ws.Cell(1, 1).Style.Font.FontSize = 12;
+    ws.Cell(1, 1).Style.Font.Bold = true;
+    ws.Cell(1,1).Value = "Monthly Summary Report for " + ViewBag.Month + " of " + ViewBag.Year;
+    ws.Range(1, 1, 1, 11).Merge();
+    ws.Cell(2, 1).InsertData(new[] {
+        new[] { "Date", "Total Cash Money Transfers", "Company Commission", "Shamaah Commission", "Other Services Amount", "Payout Commission", "Payout Amount", "Withdrawal Amount", "Expenses and Debits", "Total Due Cash", "Total Existing Cash", " Cash Difference" }
+    });
+
+    //freeze header row
+    ws.SheetView.FreezeRows(2);
+
+    if (Model.DailyCorporationIncomeList.Count > 0)
+    {
+
+        //add data
+        var dataRange = ws.Cell(3, 1).InsertData(
+           (from t in Model.DailyCorporationIncomeList
+            select new
+            {
+                t.DailyServiceDate,
+                t.DailyIncomeAmountTotal,
+                t.DailyCompanyCommissionTotal,
+                t.DailyCorporationCommissionTotal,
+                t.DailyCorporationServiceAmountTotal,
+                t.DailyCorporationPayoutCommissionTotal,
+                t.DailyCorporationPayoutAmountTotal,
+                t.DailyCorporationWithdrawalsTotal,
+                t.DailyCorporationExpensesTotal, 
+                t.DailyCashTotal,
+                t.DailyExistingCashTotal,
+                t.CashDifference
+            }));
+
+        //make it a table
+        dataRange.Range(1, 2, dataRange.RangeAddress.LastAddress.RowNumber-2, dataRange.RangeAddress.LastAddress.ColumnNumber).Style.NumberFormat.Format = "$ #,##0.00";
+        ws.Range(2, 1, dataRange.RangeAddress.LastAddress.RowNumber, dataRange.RangeAddress.LastAddress.ColumnNumber)
+             .CreateTable();
+    }
+
+    //fix column widths
+    ws.Columns().AdjustToContents();
+
+    //send back to the browser
+    using (var stream = new MemoryStream())
+    {
+        wb.SaveAs(stream);
+        stream.WriteTo(Response.OutputStream);
+    }
+    Response.End();
+}

@@ -1,5 +1,9 @@
-﻿function formatCurrency(value) {
-    return "$" + value.toFixed(2);
+﻿function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function formatCurrency(value) {
+    return "$" + numberWithCommas(value.toFixed(2));
 }
 
 define(['knockout', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpIncomesVm', 'DailyIncome/dailyCorpCashDrawerVm', 'DailyIncome/dailyCorpWithdrawalVm', 'DailyIncome/dailyCorpReconciliationVm', 'DailyIncome/dailyCorpExpenseVm'], function (ko, dCompVm, dCorpVm, dCorpCashDrawerVm, dCorpWithdrawalVm, dCorpReconciliationVm, dCorpExpenseVm) {
@@ -16,6 +20,10 @@ define(['knockout', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpI
         self.dailyCompanyPayouts = ko.observableArray();
         self.dailyCorporationReconciliations = ko.observableArray();
         self.dailyCorporationExpenses = ko.observableArray();
+        self.totalCashBalance = ko.observable(0);
+        self.totalExistingCash = ko.observable(0);
+        self.cashDifference = ko.observable(0);
+    
         //Company Income Totals
         self.IncomeAmountGrandTotal = ko.pureComputed(function () {
             var total = 0;
@@ -37,7 +45,7 @@ define(['knockout', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpI
             $.each(self.dailyIncomes(), function () { total += parseFloat(this.DailyCorporationCommission() ? this.DailyCorporationCommission():0) });
             return total;
         });
-        self.GrandTotal = ko.pureComputed(function () {
+        self.transferGrandTotal = ko.pureComputed(function () {
             var total = 0;
             $.each(self.dailyIncomes(), function () { total += parseFloat(this.DailyCorporationIncomeTotal() ? this.DailyCorporationIncomeTotal() : 0) });
             return total;
@@ -59,6 +67,13 @@ define(['knockout', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpI
             $.each(self.dailyCorporationIncomes(), function () { total += parseFloat(this.dailyCorporationIncomeTotal() ? this.dailyCorporationIncomeTotal() : 0) });
             return total;
         });
+        //Cash Drawer Totals
+        self.corporationCashDrawerAmountGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCorporationCashDrawers(), function () { total += parseFloat(this.cashDrawerAmount() ? this.cashDrawerAmount() : 0) });
+            return total;
+        });
+
         //Withdrawals Totals
         self.corporationWithdrawalAmountGrandTotal = ko.pureComputed(function () {
             var total = 0;
@@ -82,20 +97,21 @@ define(['knockout', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpI
             $.each(self.dailyCompanyPayouts(), function () { total += parseFloat(this.DailyCorporationIncomeTotal() ? this.DailyCorporationIncomeTotal() : 0) });
             return total;
         });
-
-
+          //Expenses Totals
+        self.corporationExpenseAmountGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCorporationExpenses(), function () { total += parseFloat(this.expenseAmount() ? this.expenseAmount() : 0) });
+            return total;
+        });
+        
+     
         //Corporation Reconciliations Totals
         self.corporationReconciliationAmountGrandTotal = ko.pureComputed(function () {
             var total = 0;
             $.each(self.dailyCorporationReconciliations(), function () { total += parseFloat(this.reconciliationAmount() ? this.reconciliationAmount() : 0) });
             return total;
         });
-        //Expenses Totals
-        self.corporationExpenseAmountGrandTotal = ko.pureComputed(function () {
-            var total = 0;
-            $.each(self.dailyCorporationExpenses(), function () { total += parseFloat(this.expenseAmount() ? this.expenseAmount() : 0) });
-            return total;
-        });
+      
         //Daily Income Add/Remove
         self.addDailyIncome = function () {
             self.dailyIncomes.push(new dCompVm({
@@ -168,7 +184,7 @@ define(['knockout', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpI
             }));
         };
       
-
+        self.cashDifference(self.corporationReconciliationAmountGrandTotal() - (self.transferGrandTotal() + self.corporationGrandTotal() + self.corporationCashDrawerAmountGrandTotal() - (self.corporationWithdrawalAmountGrandTotal() + self.payoutGrandTotal() + self.corporationExpenseAmountGrandTotal())))
         self.applyBindings = function () {
             ko.applyBindings(self);
         };

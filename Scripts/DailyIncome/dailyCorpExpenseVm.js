@@ -34,8 +34,6 @@ define(['knockout', 'lodash', 'jquery', 'knockout.mapping', 'utils'], function (
             }).done(function (data) {
                 self.dailyCorporationExpenseId(data.DailyCorporationExpenseId);
                 self.expenseTypeId(data.ExpenseTypeId);
-                self.expenseTypeName(data.ExpenseTypeName);
-                
                 self.IsSaving(false);
             });;
 

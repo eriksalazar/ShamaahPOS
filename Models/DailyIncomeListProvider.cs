@@ -46,6 +46,8 @@ namespace ShamaahPOS.Models
         public Decimal DailyCompanyCommissionTotal { get; set; }
         public Decimal DailyCorporationCommissionTotal { get; set; }
         public Decimal DailyCorporationServiceAmountTotal { get; set; }
+        public Decimal DailyCorporationPayoutCommissionTotal { get; set; }
+        public Decimal DailyCorporationPayoutAmountTotal { get; set; }
         public Decimal DailyCorporationWithdrawalsTotal { get; set; }
         public Decimal DailyCorporationExpensesTotal { get; set; }
         public Decimal DailyCashTotal { get; set; }

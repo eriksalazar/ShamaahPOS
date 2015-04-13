@@ -50,6 +50,12 @@
                         Other Services Amount
                     </th>
                     <th class="col-md-2 text-center">
+                        Payout Commission
+                    </th>
+                    <th class="col-md-2 text-center">
+                        Payout Amount
+                    </th>
+                    <th class="col-md-2 text-center">
                         Withdrawal Amount
                     </th>
 
@@ -99,6 +105,12 @@
                             @string.Format("{0:C}", @item.DailyCorporationServiceAmountTotal)
                         </td>
                         <td class="text-right">
+                            @string.Format("{0:C}", @item.DailyCorporationPayoutCommissionTotal)
+                        </td>
+                        <td class="text-right">
+                            @string.Format("{0:C}", @item.DailyCorporationPayoutAmountTotal)
+                        </td>
+                        <td class="text-right">
                             @string.Format("{0:C}", @item.DailyCorporationWithdrawalsTotal)
                         </td>
                         <td class="text-right">
@@ -118,6 +130,13 @@
             </tbody>
         </table>
     </div>
+</div>
+<div id="saveAction">
+    <form action="/DailyIncome/SaveAsExcel" method="POST">
+        <input type="hidden" id="hdnMonth" name="month" value="" />
+        <input type="hidden" id="hdnYear" name="year" value="" />
+        <input id="btnSaveAction" type="submit" class="btn btn-info" value="Excel Export" />
+    </form>
 </div>
 <div class="modal fade" id="myNewDailyIncomeModal">
     <div class="modal-dialog">
@@ -152,6 +171,8 @@
             if (getParameterByName("valid") == "0") {
                 $('.alert-danger').show();
             }
+            document.getElementById('hdnMonth').value = getMonth();
+            document.getElementById('hdnYear').value = getYear();
         });
         $(document).on("click", "#CreateNewDailyIncome", function (event) {
             var serviceDate = document.getElementById("ServiceDate").value;
@@ -163,6 +184,7 @@
             window.location = "/DailyIncome/Create?serviceDate=" + serviceDate;
 
         });
+
         function browseOlder() {
             var currMonth = getParameterByName('month');
             var currYear = getParameterByName('year');
@@ -213,6 +235,17 @@
             }
             window.location = '/DailyIncome/Index?month=' + currMonth + '&year=' + currYear;
         };
+
+        function getMonth() {
+            var currMonth = getParameterByName('month');
+            return currMonth;
+           
+        };
+        function getYear()
+        {
+            var currYear = getParameterByName('year');
+            return currYear;
+        }
 
         function rowStyle(row, index) {
             var classes = ['active', 'success', 'info', 'warning', 'danger'];

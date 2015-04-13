@@ -141,7 +141,7 @@
                     </div>
                     <div class="col-md-2 text-right">
                         <h5 class=" list-group-item-heading">
-                            <span data-bind="text: formatCurrency(GrandTotal())" />
+                            <span data-bind="text: formatCurrency(transferGrandTotal())" />
                         </h5>
                     </div>
                 </div>
@@ -232,6 +232,58 @@
                 </div>
             </div>
         </div>
+        <div class="list-group well">
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-5 ">
+                        <h4 class="list-group-item-heading">
+                            <span>Payouts</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <h4 class="list-group-item-heading">
+                            <span>Amount</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2 text-center">
+                        <h4 class="list-group-item-heading">
+                            <span>Commission Amount</span>
+                        </h4>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <h4 class="list-group-item-heading">
+                            <span>Total</span>
+                        </h4>
+                    </div>
+
+                </div>
+            </div>
+            <div class="list-group-item">
+                <div class="row">
+                    <div class="col-md-5 ">
+                        <h4 class="list-group-item-heading">
+                            <a href="#myPayoutModal" data-toggle="modal">Payouts</a>
+                        </h4>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <h5 class="list-group-item-heading">
+                            <span data-bind="text: formatCurrency(payoutIncomeAmountGrandTotal())" />
+                        </h5>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <h5 class="list-group-item-heading">
+                            <span data-bind="text: formatCurrency(payoutCommissionCorporationAmountGrandTotal())" />
+                        </h5>
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <h5 class="list-group-item-heading">
+                            <span data-bind="text: formatCurrency(payoutGrandTotal())" />
+                        </h5>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         <div class="list-group well" id="divWithdrawals">
             <div class="list-group-item">
                 <div class="row">
@@ -259,23 +311,7 @@
                 </div>
             </div>
             <div class="list-group-item">
-                <div class="row">
-                    <div class="col-md-5 ">
-                        <h4 class="list-group-item-heading">
-                            <a href="#myPayoutModal" data-toggle="modal">Payouts</a>
-                        </h4>
-                    </div>
-                    <div class="col-md-2">
 
-                    </div>
-                    <div class="col-md-2 text-right">
-                        <span data-bind="text: formatCurrency(payoutGrandTotal())" />
-                    </div>
-                    <div class="col-md-2 text-right">
-                        <span data-bind="text: formatCurrency(payoutGrandTotal())" />
-                    </div>
-
-                </div>
 
                 <div data-bind="foreach: dailyCorporationWithdrawals">
                     <div class="row">
@@ -330,10 +366,10 @@
                 <div class="row">
                     <div class="col-md-7 ">
                         <h4 class="list-group-item-heading">
-                            <span>Expenses</span>
+                            <span>Expenses and Debits</span>
                         </h4>
                     </div>
-                  
+
                     <div class="col-md-2 text-center">
                         <h4 class="list-group-item-heading">
                             <span>Amount</span>
@@ -356,11 +392,11 @@
                         <h5 class="list-group-item-heading" data-bind="if: expenseTypeId() !=2">
                             <span data-bind="text: expenseTypeName"></span>
                         </h5>
-                        <div  data-bind="if: expenseTypeId() ==2 || dailyCorporationExpenseId() ==null">
+                        <div data-bind="if: expenseTypeId() ==2 || dailyCorporationExpenseId() ==null">
                             <input data-bind="value: expenseDescription, valueUpdate: 'afterkeydown'" />
                         </div>
                     </div>
-                   
+
                     <div class="col-md-2 text-right">
                         <input class="text-right" data-bind="numeric: expenseAmount, value:expenseAmount, valueUpdate: 'afterkeydown'" />
                     </div>
@@ -385,7 +421,7 @@
                             <span>Total</span>
                         </h4>
                     </div>
-             
+
                     <div class="col-md-2 text-right">
                         <h5 class="list-group-item-heading">
                             <span class="text-right" data-bind="text: formatCurrency(corporationExpenseAmountGrandTotal())" />
@@ -403,6 +439,18 @@
                 <div class="col-md-offset-5 col-md-10">
                     <button data-bind="click: addDailyOtherExpense" class="btn btn-default">Add New Expense</button>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9 text-right ">
+                <h2 class="list-group-item-heading">
+                    <span>Total Due Cash</span>
+                </h2>
+            </div>
+            <div class="col-md-2 text-right">
+                <h2 class=" list-group-item-heading">
+                    <span data-bind="text: formatCurrency(transferGrandTotal()+corporationGrandTotal()+corporationCashDrawerAmountGrandTotal()+payoutCommissionCorporationAmountGrandTotal()-(corporationWithdrawalAmountGrandTotal()+payoutIncomeAmountGrandTotal()+corporationExpenseAmountGrandTotal()))" />
+                </h2>
             </div>
         </div>
 
@@ -451,6 +499,30 @@
                     </div>
 
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9 text-right ">
+                <h2 class="list-group-item-heading">
+                    <span>Total Existing Cash</span>
+                </h2>
+            </div>
+            <div class="col-md-2 text-right">
+                <h2 class=" list-group-item-heading">
+                    <span data-bind="text: formatCurrency(corporationReconciliationAmountGrandTotal())" />
+                </h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9 text-right ">
+                <h2 class="list-group-item-heading">
+                    <span>Cash Difference</span>
+                </h2>
+            </div>
+            <div class="col-md-2 text-right">
+                <h2 class=" list-group-item-heading">
+                    <span data-bind="text: formatCurrency(corporationReconciliationAmountGrandTotal() - (transferGrandTotal()+corporationGrandTotal()+corporationCashDrawerAmountGrandTotal()+payoutCommissionCorporationAmountGrandTotal()-(corporationWithdrawalAmountGrandTotal()+payoutIncomeAmountGrandTotal()+corporationExpenseAmountGrandTotal())))" />
+                </h2>
             </div>
         </div>
         <div class="modal fade" id="myPayoutModal">

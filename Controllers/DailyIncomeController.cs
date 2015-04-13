@@ -216,5 +216,20 @@ namespace ShamaahPOS.Controllers
             var ds = new DailyCorporationExpense();
             _db.Delete("DailyCorporationExpense", "DailyCorporationExpenseId", ds, dailyCorporationExpenseId);
         }
+        [HttpPost]
+        public ActionResult SaveAsExcel(int? month, int? year)
+        {
+            var vm = new DailyIncomeListProvider();
+
+            if (month == null && year == null)
+            {
+                month = DateTime.Now.Month;
+                year = DateTime.Now.Year;
+            }
+            ViewBag.Month = System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(month));
+
+            ViewBag.Year = year;
+            return View(vm.LoadList(month, year));
+        }
     }
 }

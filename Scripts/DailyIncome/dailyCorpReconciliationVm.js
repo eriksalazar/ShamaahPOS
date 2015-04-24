@@ -12,7 +12,7 @@ define(['knockout', 'lodash', 'jquery', 'knockout.mapping', 'utils'], function (
         self.reconciliationDate = ko.observable(data.ReconciliationDate);
         self.reconciliationDescription = ko.observable(data.ReconciliationDescription);
         self.reconciliationAmountTotal = ko.pureComputed(function () {
-            return parseFloat(self.reconciliationAmount() ? self.reconciliationAmount() : 0);
+            return parseFloat(self.reconciliationAmount() ? self.reconciliationAmount() * self.denominationTypeName() : 0);
         });
 
         var save = ko.computed(function () {

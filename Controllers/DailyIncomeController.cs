@@ -80,7 +80,7 @@ namespace ShamaahPOS.Controllers
 
         [HttpPost]
         public int? SaveDailyCompanyIncome(int? dailyCompanyServiceIncomeId, decimal? incomeAmount,
-            decimal? dailyCompanyCommission, decimal? dailyCorporationCommission, string manualCompanyServiceName, string dailyServiceDate)
+            decimal? dailyCompanyCommission, decimal? dailyCorporationCommission, string manualCompanyServiceName, string dailyServiceDate, int? dailyServiceQuantity)
         {
             if (dailyCompanyServiceIncomeId > 0)
             {
@@ -88,6 +88,7 @@ namespace ShamaahPOS.Controllers
                 ds.IncomeAmount = incomeAmount;
                 ds.DailyCompanyCommission = dailyCompanyCommission;
                 ds.DailyCorporationCommission = dailyCorporationCommission;
+                ds.DailyServiceQuantity = dailyServiceQuantity;
                 _db.Update(ds);
                 return dailyCompanyServiceIncomeId;
             }

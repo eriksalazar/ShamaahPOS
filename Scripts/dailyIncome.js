@@ -20,6 +20,7 @@ define(['knockout', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpI
         self.dailyCompanyPayouts = ko.observableArray();
         self.dailyCorporationReconciliations = ko.observableArray();
         self.dailyCorporationExpenses = ko.observableArray();
+        self.dailyCorporationCashCheckingIncomes = ko.observableArray();
         self.totalCashBalance = ko.observable(0);
         self.totalExistingCash = ko.observable(0);
         self.cashDifference = ko.observable(0);
@@ -48,6 +49,23 @@ define(['knockout', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpI
         self.transferGrandTotal = ko.pureComputed(function () {
             var total = 0;
             $.each(self.dailyIncomes(), function () { total += parseFloat(this.DailyCorporationIncomeTotal() ? this.DailyCorporationIncomeTotal() : 0) });
+            return total;
+        });
+
+        //Corporation Cash Checking Totals
+        self.corporationCashCheckingAmountGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCorporationCashCheckingIncomes(), function () { total += parseFloat(this.incomeAmount() ? this.incomeAmount() : 0) });
+            return total;
+        });
+        self.corporationCashCheckingCommissionAmountGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCorporationCashCheckingIncomes(), function () { total += parseFloat(this.dailyCorporationCommission() ? this.dailyCorporationCommission() : 0) });
+            return total;
+        });
+        self.corporationCashCheckingGrandTotal = ko.pureComputed(function () {
+            var total = 0;
+            $.each(self.dailyCorporationCashCheckingIncomes(), function () { total += parseFloat(this.dailyCorporationIncomeTotal() ? this.dailyCorporationIncomeTotal() : 0) });
             return total;
         });
 
@@ -108,7 +126,7 @@ define(['knockout', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpI
         //Corporation Reconciliations Totals
         self.corporationReconciliationAmountGrandTotal = ko.pureComputed(function () {
             var total = 0;
-            $.each(self.dailyCorporationReconciliations(), function () { total += parseFloat(this.reconciliationAmount() ? this.reconciliationAmount() : 0) });
+            $.each(self.dailyCorporationReconciliations(), function () { total += parseFloat(this.reconciliationAmountTotal() ? this.reconciliationAmountTotal() : 0) });
             return total;
         });
       
@@ -167,6 +185,9 @@ define(['knockout', 'DailyIncome/dailyCompanyIncomesVm', 'DailyIncome/dailyCorpI
             }));
 
             self.dailyCorporationIncomes(_.map(rawModel.DailyCorporationServiceIncomes, function (d) {
+                return new dCorpVm(d);
+            }));
+            self.dailyCorporationCashCheckingIncomes(_.map(rawModel.DailyCorporationCashCheckingIncomes, function (d) {
                 return new dCorpVm(d);
             }));
             self.dailyCorporationWithdrawals(_.map(rawModel.DailyCorporationWithdrawals, function (d) {

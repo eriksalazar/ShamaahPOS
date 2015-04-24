@@ -32,6 +32,8 @@ namespace ShamaahPOS.Models
          public bool? IsPayout { get; set; }
         [Column("ManualCorporationId")]
          public int? ManualCorporationId { get; set; }
+        [Column("DailyServiceQuantity")]
+        public int? DailyServiceQuantity { get; set; }
 
     }
 
@@ -47,6 +49,9 @@ namespace ShamaahPOS.Models
         public string ManualCompanyServiceName { get; set; }
         public bool? IsPayout { get; set; }
         public int? ManualCorporationId { get; set; }
+        public int? DailyServiceQuantity { get; set; }
+        public decimal? CommissionPercent { get; set; }
+        public string CommissionPerQuantity { get; set; }
 
     }
 }

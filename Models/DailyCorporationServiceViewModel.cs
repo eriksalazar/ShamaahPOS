@@ -10,6 +10,7 @@ namespace ShamaahPOS.Models
         public DailyCompanyServiceIncomeRow[] DailyCompanyServiceIncomes;
         public DailyCorporationCashDrawerRow[] DailyCorporationCashDrawers;
         public DailyCorporationServiceIncomeRow[] DailyCorporationServiceIncomes;
+        public DailyCorporationServiceIncomeRow[] DailyCorporationCashCheckingIncomes;
         public DailyCompanyServiceIncomeRow[] DailyCompanyPayouts;
         public DailyCorporationWithdrawalRow[] DailyCorporationWithdrawals;
 

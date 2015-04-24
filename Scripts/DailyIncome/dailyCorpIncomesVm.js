@@ -11,7 +11,7 @@ define(['knockout', 'lodash', 'jquery', 'knockout.mapping', 'utils'], function (
         self.dailyCorporationIncomeDate = ko.observable(data.DailyCorporationIncomeDate);
         self.dailyCorporationIncomeNote = ko.observable(data.dailyCorporationIncomeNote);
         self.dailyCorporationIncomeTotal = ko.pureComputed(function () {
-            return parseFloat(self.incomeAmount() ? self.incomeAmount() : 0) + parseFloat(self.dailyCorporationCommission() ? self.dailyCorporationCommission() : 0);
+            return parseFloat(self.incomeAmount() ? self.incomeAmount() : 0) + (self.corporationServiceProvidedId() !=7 ? parseFloat(self.dailyCorporationCommission() ? self.dailyCorporationCommission() : 0) : 0);
         });
 
         self.IsSaving = ko.observable(false);

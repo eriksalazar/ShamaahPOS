@@ -25,7 +25,11 @@ namespace ShamaahPOS.Models
             vm.DailyCorporationCashDrawers = _db.Fetch<DailyCorporationCashDrawerRow>(
                 "exec dbo.getDailyCorporationCashDrawer @0, @1", Convert.ToDateTime(todayServiceDate), 1).ToArray();
             vm.DailyCorporationServiceIncomes = _db.Fetch<DailyCorporationServiceIncomeRow>(
-                "exec dbo.getDailyCorporationIncome @0, @1", Convert.ToDateTime(todayServiceDate), 1).OrderBy(x => x.CorporationServiceProvidedName).ToArray();
+                "exec dbo.getDailyCorporationIncome @0, @1", Convert.ToDateTime(todayServiceDate), 1).Where(x => x.CorporationServiceProvidedId !=7)
+                .OrderBy(x => x.CorporationServiceProvidedName).ToArray();
+            vm.DailyCorporationCashCheckingIncomes = _db.Fetch<DailyCorporationServiceIncomeRow>(
+               "exec dbo.getDailyCorporationIncome @0, @1", Convert.ToDateTime(todayServiceDate), 1).Where(x=>x.CorporationServiceProvidedId==7)
+               .OrderBy(x => x.CorporationServiceProvidedName).ToArray();
             vm.DailyCorporationWithdrawals = _db.Fetch<DailyCorporationWithdrawalRow>(
                 "exec dbo.getDailyCorporationWithdrawal @0, @1", Convert.ToDateTime(todayServiceDate), 1).ToArray();
             vm.DailyCompanyPayouts = _db.Fetch<DailyCompanyServiceIncomeRow>(

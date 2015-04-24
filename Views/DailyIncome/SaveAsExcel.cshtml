@@ -29,7 +29,7 @@
     //set header labels
     ws.Cell(1, 1).Style.Font.FontSize = 12;
     ws.Cell(1, 1).Style.Font.Bold = true;
-    ws.Cell(1,1).Value = "Monthly Summary Report for " + ViewBag.Month + " of " + ViewBag.Year;
+    ws.Cell(1, 1).Value = "Shamaah MultiServices - Monthly Summary Report for " + ViewBag.Month + " of " + ViewBag.Year;
     ws.Range(1, 1, 1, 11).Merge();
     ws.Cell(2, 1).InsertData(new[] {
         new[] { "Date", "Total Cash Money Transfers", "Company Commission", "Shamaah Commission", "Other Services Amount", "Payout Commission", "Payout Amount", "Withdrawal Amount", "Expenses and Debits", "Total Due Cash", "Total Existing Cash", " Cash Difference" }

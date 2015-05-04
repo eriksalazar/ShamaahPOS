@@ -14,11 +14,18 @@ define(['knockout', 'lodash', 'jquery', 'knockout.mapping', 'utils'], function (
         self.dailyServiceQuantity = ko.observable(data.DailyServiceQuantity);
         self.commissionPercent = ko.observable(data.CommissionPercent);
         self.commissionPerQuantity = ko.observable(data.CommissionPerQuantity);
+        self.serviceProvidedId = ko.observable(data.ServiceProvidedId);
         self.DailyCorporationIncomeTotal = ko.pureComputed(function () {
-            return parseFloat(self.IncomeAmount() ? self.IncomeAmount() : 0) + parseFloat(self.DailyCompanyCommission() ? self.DailyCompanyCommission() : 0) + (!self.IsPayout() && self.CompanyServiceProvidedId() !=9  ?  parseFloat(self.DailyCorporationCommission() ? self.DailyCorporationCommission() : 0) : 0);
+            var transferIncomeAmount = parseFloat(self.IncomeAmount() ? self.IncomeAmount() : 0);
+            var dailyCompanyCommission =  parseFloat(self.DailyCompanyCommission() ? self.DailyCompanyCommission() : 0);
+            var dailyCorporationCommission = (self.serviceProvidedId() != 5 && self.serviceProvidedId() != 12) ? parseFloat(self.DailyCorporationCommission() ? self.DailyCorporationCommission() : 0) : 0;
+            var dailyCorporationTotal = transferIncomeAmount + dailyCompanyCommission + (!self.IsPayout() && self.CompanyServiceProvidedId() !=9  ? dailyCorporationCommission : 0 );
+
+            return dailyCorporationTotal
+             //parseFloat(self.IncomeAmount() ? self.IncomeAmount() : 0) + (self.serviceProvided()!=5 && self.serviceProvided() !=12? (parseFloat(self.DailyCompanyCommission() ? self.DailyCompanyCommission() : 0) + (!self.IsPayout() && self.CompanyServiceProvidedId() !=9  ?  parseFloat(self.DailyCorporationCommission() ? self.DailyCorporationCommission() : 0) : 0)) : 0);
         });
         self.DailyCompanyIncomeTotal = ko.pureComputed(function () {
-            return parseFloat(self.IncomeAmount() ? self.IncomeAmount() : 0) + parseFloat(self.DailyCompanyCommission() ? self.DailyCompanyCommission() : 0);
+            return parseFloat(self.IncomeAmount() ? self.IncomeAmount() : 0) + parseFloat(self.DailyCompanyCommission() ? self.DailyCompanyCommission() : 0) - ((self.serviceProvidedId() == 12 || self.serviceProvidedId() ==5) ? self.DailyCorporationCommission() : 0);
         });
 
         self.ManualCompanyServiceName = ko.observable(data.ManualCompanyServiceName);
@@ -27,12 +34,14 @@ define(['knockout', 'lodash', 'jquery', 'knockout.mapping', 'utils'], function (
         ko.computed(function (){
             var dailyCompanyCommission = self.DailyCompanyCommission();
             if (ko.computedContext.isInitial()) return;
-            if (self.commissionPercent() != null && !self.IsPayout()) {
+            if (self.commissionPercent() != null && !self.IsPayout() && !self.serviceProvidedId()==12) {
                 self.DailyCorporationCommission(parseFloat(parseFloat(dailyCompanyCommission) * parseFloat(self.commissionPercent() ? self.commissionPercent() : 0)).toFixed(2))
 
             }
         }).extend({ rateLimit: { timeout: 700, method: "notifyWhenChangesStop" } });
         
+      
+
         ko.computed(function () {
             var dailyServiceQuantity = self.dailyServiceQuantity();
             if (ko.computedContext.isInitial()) return;

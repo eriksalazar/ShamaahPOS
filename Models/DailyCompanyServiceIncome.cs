@@ -52,6 +52,6 @@ namespace ShamaahPOS.Models
         public int? DailyServiceQuantity { get; set; }
         public decimal? CommissionPercent { get; set; }
         public string CommissionPerQuantity { get; set; }
-
+        public int? ServiceProvidedId { get; set; }
     }
 }

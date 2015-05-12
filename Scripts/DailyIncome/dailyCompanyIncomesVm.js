@@ -39,7 +39,14 @@ define(['knockout', 'lodash', 'jquery', 'knockout.mapping', 'utils'], function (
 
             }
         }).extend({ rateLimit: { timeout: 700, method: "notifyWhenChangesStop" } });
-        
+        ko.computed(function () {
+            var incomeAmount = self.IncomeAmount();
+            if (ko.computedContext.isInitial()) return;
+            if (self.commissionPercent() !=null && self.serviceProvidedId() ==12)
+            {
+                self.DailyCorporationCommission(parseFloat(parseFloat(incomeAmount) * parseFloat(self.commissionPercent() ? self.commissionPercent() : 0)).toFixed(2))
+            }
+        });
       
 
         ko.computed(function () {
